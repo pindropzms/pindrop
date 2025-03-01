@@ -26,7 +26,7 @@ body {
   width: 100%;
   max-width: 400px;
   background: rgba(255, 255, 255, 0.9);
-  padding: 20px;
+  padding: 15px; /* Reduced padding to fit content */
   border-radius: 12px;
   box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
   color: #435a64;
@@ -38,16 +38,16 @@ body {
 /* Headings */
 h1, h2 {
   text-align: center;
-  margin-bottom: 10px;
+  margin-bottom: 8px; /* Smaller margin */
 }
 
 h1 {
-  font-size: 22px;
+  font-size: 18px; /* Smaller font size for heading */
   color: #405a65;
 }
 
 h2 {
-  font-size: 14px;
+  font-size: 12px; /* Smaller subheading font size */
   color: #299cb8;
   font-weight: normal;
 }
@@ -56,16 +56,16 @@ h2 {
 .form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 15px; /* Equal spaces between form elements */
 }
 
 /* Input Fields */
 input, select, textarea {
   width: 100%;
-  padding: 10px;
+  padding: 8px; /* Smaller padding */
   border: 2px solid #299cb8;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 12px; /* Smaller font size for inputs */
   background-color: rgba(255, 255, 255, 0.8);
   outline: none;
   transition: border-color 0.3s ease-in-out;
@@ -81,7 +81,7 @@ button {
   background: linear-gradient(to right, #299cb8, #00ffea);
   color: #fff;
   padding: 10px;
-  font-size: 14px;
+  font-size: 12px; /* Smaller font size for button */
   border: none;
   border-radius: 8px;
   cursor: pointer;
@@ -128,26 +128,26 @@ img {
   }
 
   h1 {
-    font-size: 20px; /* Slightly smaller font size for headings */
+    font-size: 16px; /* Smaller heading font size */
   }
 
   h2 {
-    font-size: 12px; /* Reduced h2 size for better fit */
+    font-size: 12px; /* Reduced subheading font size */
   }
 
   input, select, textarea {
-    padding: 8px; /* Less padding for input fields */
-    font-size: 12px; /* Smaller font size for input fields */
+    padding: 6px; /* Smaller padding for input fields */
+    font-size: 10px; /* Smaller font size for inputs */
   }
 
   button {
-    padding: 12px;
-    font-size: 14px;
+    padding: 10px;
+    font-size: 12px;
   }
 
   .location-btn {
     font-size: 12px;
-    padding: 12px;
+    padding: 8px; /* Smaller padding for the location button */
   }
 }
 
@@ -159,11 +159,11 @@ img {
   }
 
   h1 {
-    font-size: 18px; /* Smaller heading font size */
+    font-size: 14px; /* Smaller font size for h1 */
   }
 
   h2 {
-    font-size: 10px; /* Even smaller h2 font size */
+    font-size: 10px; /* Even smaller font size for h2 */
   }
 
   input, select, textarea {
@@ -172,13 +172,13 @@ img {
   }
 
   button {
-    padding: 10px; /* Smaller button size */
-    font-size: 12px; /* Smaller button text */
+    padding: 10px; /* Smaller button padding */
+    font-size: 12px; /* Smaller button font size */
   }
 
   .location-btn {
     font-size: 12px;
-    padding: 10px; /* Smaller padding for the location button */
+    padding: 8px; /* Smaller location button padding */
   }
 }
 
@@ -276,7 +276,7 @@ img {
     <form id="pickupForm" onsubmit="handleSubmit(event)">
       <img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" alt="Logo">
       <h1>Schedule Pickup</h1>
-      <h2>Pickups available from 9AM - 4PM ONLY</h2>
+      <h2>Pickups available from 8AM - 4PM ONLY</h2>
       
       <label for="name">Full Name</label>
       <input type="text" id="name" name="name" required>
