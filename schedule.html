@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PinDrop.com/schedule a pickup</title>
+  <style>
+    /* General Styles */
+    body {
+      font-family: "Arial", sans-serif;
+      background: linear-gradient(to bottom, #405a65, #299cb8, #00ffea);
+      color: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  
+    /* Container */
+    .container {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+      color: #435a64;
+      animation: fadeIn 0.6s ease-in-out;
+      text-align: left;
+      box-sizing: border-box;
+    }
+  
+    /* Headings */
+    h1, h2 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+  
+    h1 {
+      font-size: 22px;
+      color: #405a65;
+    }
+  
+    h2 {
+      font-size: 14px;
+      color: #299cb8;
+      font-weight: normal;
+    }
+  
+    /* Form */
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+  
+    input, select, textarea {
+      width: 100%;
+      padding: 6px;
+      border: 2px solid #299cb8;
+      border-radius: 8px;
+      font-size: 14px;
+      background-color: rgba(255, 255, 255, 0.8);
+      outline: none;
+      transition: border-color 0.3s ease-in-out;
+    }
+  
+    input:focus, select:focus, textarea:focus {
+      border-color: #405a65;
+    }
+  
+    /* Buttons */
+    button {
+      background: linear-gradient(to right, #299cb8, #00ffea);
+      color: #fff;
+      padding: 8px;
+      font-size: 14px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: all 0.3s ease-in-out;
+    }
+  
+    button:hover {
+      background: linear-gradient(to right, #405a65, #299cb8);
+      transform: scale(1.05);
+    }
+  
+    /* Location Button */
+    .location-btn {
+      background-color: #007bff;
+      font-size: 12px;
+      padding: 7px;
+      border-radius: 8px;
+      display: block;
+      width: 100%;
+      text-align: center;
+    }
+  
+    .location-btn:hover {
+      background-color: #0056b3;
+    }
+  
+    /* Images */
+    img {
+      display: block;
+      margin: 0 auto 10px;
+      max-width: 80px;
+      height: auto;
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const timeInput = document.getElementById("time");
+
+      // Validate service scheduling time (between 8 AM and 4 PM)
+      timeInput.addEventListener("change", function () {
+        const selectedTime = this.value;
+        if (selectedTime) {
+          const parts = selectedTime.split(":");
+          if (parts.length < 2) {
+            alert("Invalid time format. Please use HH:MM format.");
+            this.value = "";
+            return;
+          }
+          const [hours, minutes] = parts.map(Number);
+          if (isNaN(hours) || isNaN(minutes)) {
+            alert("Invalid time format. Please use HH:MM format.");
+            this.value = "";
+            return;
+          }
+          // Validate the time range: Allow 8:00 to 16:00 (4:00 PM). Minutes past 16:00 are not allowed.
+          if (hours < 8 || hours > 16 || (hours === 16 && minutes > 0)) {
+            alert("Pickup time must be between 8:00 AM and 4:00 PM.");
+            this.value = "";
+          }
+        }
+      });
+    });
+
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async function (position) {
+            let latitude = position.coords.latitude;
+            let longitude = position.coords.longitude;
+            let mapsLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
+            // Populate the address textarea with the raw link
+            document.getElementById('address').value = mapsLink;
+            console.log("Your location is:", mapsLink);
+          },
+          function (error) {
+            console.error("Error retrieving location:", error);
+            alert("Error retrieving location: " + error.message);
+          },
+          { 
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+          }
+        );
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+
+    async function handleSubmit(event) {
+      event.preventDefault();
+
+      const formData = new FormData(document.getElementById('pickupForm'));
+
+      const data = {};
+      formData.forEach((value, key) => {
+        data[key] = value;
+      });
+
+      try {
+        const response = await fetch('http://localhost:3000/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data),
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          // Redirect to success.html upon successful form submission
+          window.location.href = 'success.html';
+        } else {
+          alert('Error: ' + result.error);
+        }
+      } catch (error) {
+        console.error('Error submitting form:', error);
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <form id="pickupForm" onsubmit="handleSubmit(event)">
+      <img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" alt="Logo">
+      <h1>Schedule Pickup</h1>
+      <h2>Pickups available from 9AM - 4PM ONLY</h2>
+      
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" required>
+
+      <label for="address">Pickup Address</label>
+      <textarea id="address" name="address" rows="2" required></textarea>
+      <button type="button" class="location-btn" onclick="getLocation()">Use My Location</button>
+
+      <label for="date">Pickup Date</label>
+      <input type="date" id="date" name="date" required>
+
+      <label for="time">Pickup Time</label>
+      <input type="time" id="time" name="time" required>
+
+      <label for="service">Service</label>
+      <select id="service" name="service" required>
+        <option value="Not Selected">Select Option</option>
+        <option value="carwash_1_5">Mobile Carwash (1-5)</option>
+        <option value="carwash_5_10">Mobile Carwash (5-10)</option>
+        <option value="carwash_10_plus">Mobile Carwash (more than 10)</option>
+        <option value="laundry_small">Mobile Laundry (small bag)</option>
+        <option value="laundry_medium">Mobile Laundry (medium bag)</option>
+        <option value="laundry_large">Mobile Laundry (large bag)</option>
+      </select>
+      
+      <label for="site">Select Site</label>
+      <select name="site" id="site" required>
+        <option value="Not Selected">Select Option</option>
+        <option value="On-Site (YOUR HOME)">On-Site (Your Home)</option>
+        <option value="Away">Away</option>
+      </select>
+
+      <button type="submit">Schedule Pickup</button>
+    </form>
+  </div>
+</body>
+</html>
