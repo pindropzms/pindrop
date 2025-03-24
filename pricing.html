@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>PinDrop.com/your-new-page</title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+  <!-- Owl Carousel CSS -->
+  <link rel="stylesheet"
+    type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+  <!-- Nice Select CSS -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css"
+    integrity="sha256-mLBIhmBvigTFWPSCtvdu6a76T+3Xyt+K571hupeFLg4="
+    crossorigin="anonymous" />
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <!-- Custom icon font (optional) -->
+  <link href="css/font-awesome.min.css" rel="stylesheet" />
+
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+  <style>
+
+* {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+
+
+    nav ul {
+      list-style: none;
+      display: flex;
+    }
+
+    nav ul li {
+      margin-left: 20px;
+    }
+
+    nav ul li a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav ul li a:hover {
+      color: #299cb8; /* Teal from PinDrop */
+    }
+
+    /* Hero Section with Background Image */
+    .hero {
+  height: 80vh; /* Keeps it responsive */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background-image: url(images/laundry-bag.png);
+  background-size: cover; /* Ensures the image covers the entire area */
+  background-position: center; /* Centers the image */
+  background-repeat: no-repeat; /* Prevents tiling */
+  width: 100%; /* Ensures full width */
+}
+
+
+    .hero h2 {
+      font-size: 2.5rem;
+      color: #fff;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #fff;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+
+    .hero .cta-btn {
+      background-color: #004aad;
+      color: #fff;
+      padding: 12px 24px;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .hero .cta-btn:hover {
+      background-color: #299cb8;
+    }
+
+    /* Services Section */
+    #services {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    #services h2 {
+      font-size: 1.8rem;
+      color: #004aad;
+      margin-bottom: 20px;
+    }
+
+    .services-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .service-box {
+      background-color: #299cb8;
+      color: #fff;
+      padding: 20px;
+      width: 280px;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .service-box:hover {
+      transform: translateY(-5px);
+    }
+
+    .service-box h3 {
+      margin-bottom: 10px;
+    }
+  
+    #pricing {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #f8f8f8;
+  }
+  .pricing-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  .pricing-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+  }
+  .pricing-box h3 {
+    color: #333;
+  }
+  .pricing-box p {
+    font-size: 14px;
+    color: #777;
+  }
+  .pricing-box h4 {
+    font-size: 18px;
+    color: #e60000;
+  }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .hero {
+        height: 60vh;
+      }
+
+      .hero h2 {
+        font-size: 2rem;
+      }
+
+      .services-container {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+  </style>
+</head>
+
+<body class="sub_page">
+  <div class="hero_area">
+    <!-- header section starts -->
+    <header class="header_section">
+      <div class="header_top">
+        <div class="container-fluid header_top_container">
+          <a class="navbar-brand " href="index.html">
+            <span>
+              <!-- Replace with your actual logo image path -->
+              <img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" alt="PinDrop Logo">
+            </span>
+          </a>
+          <div class="contact_nav">
+            <a href="https://www.google.com/maps?q=-15.379889,28.304863">
+              <i class="fa fa-map-marker" aria-hidden="true"></i>
+              <span>Lusaka, Zambia</span>
+            </a>
+            <a href="">
+              <i class="fa fa-phone" aria-hidden="true"></i>
+              <span>+260-958-6-10414</span>
+            </a>
+            <a href="">
+              <i class="fa fa-envelope" aria-hidden="true"></i>
+              <span>pindropzm@outlook.com</span>
+            </a>
+          </div>
+          <div class="social_box">
+            <a href="https://www.facebook.com/share/15gTi62DSC/?mibextid=LQQJ4d">
+              <i class="fab fa-facebook-f" aria-hidden="true"></i>
+            </a>
+            <a href="https://www.tiktok.com/@pindropzm?_t=ZM-8u3L7iWdKbt&_r=1" target="_blank">
+              <i class="fab fa-tiktok" aria-hidden="true"></i>
+            </a>
+            <a href="">
+              <i class="fa fa-linkedin" aria-hidden="true"></i>
+            </a>
+            <a href="https://www.instagram.com/pindrop_zm?igsh=MXFnOXBqMGhzYW50eg%3D%3D&utm_source=qr">
+              <i class="fa fa-instagram" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="header_bottom">
+        <div class="container-fluid">
+          <nav class="navbar navbar-expand-lg custom_nav-container">
+            <a class="navbar-brand navbar_brand_mobile" href="index.html">
+              Pin<span>Drop</span>
+            </a>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse"
+              data-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+              <span class=""> </span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="service.html">Services</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="about.html"> About</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="contact.html">Contact Us</a>
+                </li>
+                <!-- Add more nav links here if needed -->
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <!-- end header section -->
+  </div>
+
+  <!-- main section -->
+   <!-- Hero Section with Bag-in-House Background -->
+  <section class="hero" id="home">
+    <h2>Convenient Mobile Services</h2>
+    <p>Your laundry and car wash, delivered with ease.</p>
+    <a class="cta-btn" href="service.html">Explore Services</a>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services">
+    <h2>Our Services</h2>
+    <div class="services-container">
+      <div class="service-box">
+        <h3>Mobile Laundry</h3>
+        <p>We pick up, clean, and deliver your laundry hassle-free.</p>
+      </div>
+      <div class="service-box">
+        <h3>Car Wash</h3>
+        <p>On-demand car wash services wherever you are.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- end main section -->
+
+<!-- Pricing Section -->
+<section id="pricing">
+
+    <h2>Our Pricing</h2>
+    <div class="pricing-container">
+      <div class="pricing-box">
+        <h3>Interior & Exterior Carwash</h3>
+        <p>Thorough cleaning of both the inside and outside of your car, leaving it spotless and fresh.</p>
+        <h4>ZMW 150</h4>
+      </div>
+      <div class="pricing-box">
+        <h3>Car Polishing</h3>
+        <p>Enhance your car’s shine and protect its paint with professional polishing services.</p>
+        <h4>ZMW 200</h4>
+      </div>
+      <div class="pricing-box">
+        <h3>Interior Detailing Services</h3>
+        <p>Deep cleaning and conditioning of seats, carpets, and dashboards for a refreshed interior.</p>
+        <h4>ZMW 180</h4>
+      </div>
+      <div class="pricing-box">
+        <h3>Dry Cleaning</h3>
+        <p>Gentle and effective cleaning of delicate fabrics, ensuring freshness without water damage.</p>
+        <h4>ZMW 50 per item</h4>
+      </div>
+      <div class="pricing-box">
+        <h3>Laundry Pressing</h3>
+        <p>Professional ironing and pressing services to keep your clothes crisp and wrinkle-free.</p>
+        <h4>ZMW 80 per load</h4>
+      </div>
+      <div class="pricing-box">
+        <h3>Wash and Dry (Without Ironing)</h3>
+        <p>Quick and efficient washing and drying of clothes, ready for you to fold and store.</p>
+        <h4>ZMW 100 Small</h4>
+        <h4>ZMW 175 Medium</h4>
+        <h4>ZMW 230 Large</h4>
+      </div>
+    </div>
+
+  </section>
+  
+  
+  <!-- info section -->
+  <section class="info_section">
+    <div class="info_container layout_padding2">
+      <div class="container">
+        <div class="info_logo">
+          <a class="navbar-brand" href="index.html">
+            <span>
+              <img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" alt="PinDrop Logo">
+            </span>
+          </a>
+        </div>
+        <div class="info_main">
+          <div class="row">
+            <div class="col-md-3 col-lg-2">
+              <div class="info_link-box">
+                <h5>Useful Links</h5>
+                <ul>
+                  <li>
+                    <a href="index.html">Home</a>
+                  </li>
+                  <li>
+                    <a href="about.html">About</a>
+                  </li>
+                  <li>
+                    <a href="service.html">Services</a>
+                  </li>
+                  <li>
+                    <a href="contact.html">Contact</a>
+                  </li>
+                  <!-- Add more links if needed -->
+                </ul>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <h5>Working Hours</h5>
+              <p>
+                Monday – Friday <br>
+                9:00AM to 4:00PM<br>
+                Text response time &lt; five minutes
+              </p>
+            </div>
+            <div class="col-md-3 mx-auto">
+              <h5>Social Media</h5>
+              <div class="social_box">
+                <a href="https://www.facebook.com/share/15gTi62DSC/?mibextid=LQQJ4d">
+                  <i class="fa fa-facebook" aria-hidden="true"></i>
+                </a>
+                <a href="https://www.tiktok.com/@pindropzm?_t=ZM-8u3L7iWdKbt&_r=1" target="_blank">
+                  <i class="fab fa-tiktok" aria-hidden="true"></i>
+                </a>
+                <a href="#">
+                  <i class="fa fa-linkedin" aria-hidden="true"></i>
+                </a>
+                <a href="#">
+                  <i class="fa fa-youtube-play" aria-hidden="true"></i>
+                </a>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <h5>Get In Touch Today!</h5>
+              <p>We'll be glad to hear from you.</p>
+            </div>
+          </div>
+        </div>
+        <div class="info_bottom">
+          <div class="row">
+            <div class="col-lg-9">
+              <div class="info_contact">
+                <div class="row">
+                  <div class="col-md-3">
+                    <a href="https://www.google.com/maps?q=-15.379889,28.304863" class="link-box">
+                      <i class="fa fa-map-marker" aria-hidden="true"></i>
+                      <span>Location</span>
+                    </a>
+                  </div>
+                  <div class="col-md-5">
+                    <a href="#" class="link-box">
+                      <i class="fa fa-phone" aria-hidden="true"></i>
+                      <span>Call +260-958-6-10414</span>
+                    </a>
+                  </div>
+                  <div class="col-md-4">
+                    <a href="#" class="link-box">
+                      <i class="fa fa-envelope" aria-hidden="true"></i>
+                      <span>pindropzm@outlook.com</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3">
+              <div class="info_form">
+                <form action="">
+                  <input type="email" placeholder="Enter Your Email" />
+                  <button>
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- end info section -->
+
+  <!-- footer section -->
+  <footer class="footer_section">
+    <div class="container">
+      <p>
+        &copy; <span id="displayYear"></span> All Rights Reserved By
+        <a href="index.html">PinDrop</a>
+      </p>
+    </div>
+  </footer>
+  <!-- end footer section -->
+
+  <!-- jQery -->
+  <script src="js/jquery-3.4.1.min.js"></script>
+  <!-- popper js -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <!-- bootstrap js -->
+  <script src="js/bootstrap.js"></script>
+  <!-- owl slider -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <!--  OwlCarousel 2 - Filter -->
+  <script src="https://huynhhuynh.github.io/owlcarousel2-filter/dist/owlcarousel2-filter.min.js"></script>
+  <!-- nice select -->
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js"
+    integrity="sha256-Zr3vByTlMGQhvMfgkQ5BtWRSKBGa2QlspKYJnkjZTmo="
+    crossorigin="anonymous"></script>
+  <!-- custom js -->
+  <script src="js/custom.js"></script>
+
+  <!-- Year update script -->
+  <script>
+    document.getElementById('displayYear').textContent = new Date().getFullYear();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PinDrop App - Coming Soon</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+
+.coming-soon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background: linear-gradient(to right, #004aad, #299cb8);
+    text-align: center;
+    color: white;
+    padding: 20px;
+}
+
+.content {
+    max-width: 600px;
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+.app-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.app-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    color: #004aad;
+    padding: 12px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.app-btn i {
+    font-size: 1.5rem;
+    margin-right: 10px;
+}
+
+.google-play:hover {
+    background: #299cb8;
+}
+
+.app-store:hover {
+    background: #000;
+    color: white;
+}
+
+.home-btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background: white;
+    color: #004aad;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.3s ease;
+}
+
+.home-btn:hover {
+    background: #299cb8;
+}
+
+.app-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.app-image img {
+  max-width: 300px;
+  height: auto;
+}
+@media (max-width: 768px) {
+  .download-app .container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .app-buttons {
+    flex-direction: column;
+  }
+
+  .app-image img {
+    margin-top: 20px;
+    width: 80%;
+  }
+}
+
+    </style>
+</head>
+<body>
+    <div class="coming-soon">
+        <div class="content">
+            <h1>PinDrop App Coming Soon!</h1>
+            <p>We're working hard to bring you the best experience. Stay tuned!</p>
+            <a href="index.html" class="home-btn">Go to Homepage</a>
+        </div>
+    </div>
+</body>
+</html>

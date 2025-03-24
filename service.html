@@ -17,6 +17,99 @@
       <style>
           body { font-family: Arial, sans-serif; }
           img { max-width: 100%; height: auto; }
+          .download-app {
+  background: linear-gradient(to right, #004aad, #299cb8);
+  padding: 60px 20px;
+  color: white;
+  text-align: center;
+}
+
+.download-app .container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1100px;
+  margin: auto;
+}
+
+.app-content {
+  flex: 1;
+  max-width: 500px;
+}
+
+.app-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.app-content p {
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.app-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.app-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  color: #004aad;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.app-btn i {
+  font-size: 1.5rem;
+  margin-right: 10px;
+}
+
+.google-play:hover {
+  background: #f4b400;
+}
+
+.app-store:hover {
+  background: #000;
+  color: white;
+}
+
+.app-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.app-image img {
+  max-width: 300px;
+  height: auto;
+}
+
+@media (max-width: 768px) {
+  .download-app .container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .app-buttons {
+    flex-direction: column;
+  }
+
+  .app-image img {
+    margin-top: 20px;
+    width: 80%;
+  }
+}
+
       </style>
   </head>
   </html>
@@ -194,6 +287,27 @@
         </div>
     </div>
 </section>
+
+<section class="download-app">
+  <div class="container">
+    <div class="app-content">
+      <h2>Get the PinDrop App!</h2>
+      <p>Experience seamless mobile laundry and car wash services at your fingertips.</p>
+      <div class="app-buttons">
+        <a href="coming-soon.html" class="app-btn google-play">
+          <i class="fab fa-google-play"></i> Get it on Google Play
+        </a>
+        <a href="coming-soon.html" class="app-btn app-store">
+          <i class="fab fa-apple"></i> Download on the App Store
+        </a>
+      </div>
+    </div>
+    <div class="app-image">
+      <img src="images/app.jpeg" alt="PinDrop Mobile App">
+    </div>
+  </div>
+</section>
+
 
  <!-- about section -->
 
