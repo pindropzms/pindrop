@@ -50,7 +50,8 @@ app.post('/submit', async (req, res) => {
       formData.date,
       formData.time,
       formData.service,
-      formData.site
+      formData.site,
+      formData.delivery
     ]];
 
     await sheets.spreadsheets.values.append({
