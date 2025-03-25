@@ -657,6 +657,18 @@
   <!-- custom js -->
   <script src="js/custom.js"></script>
 
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const video = document.querySelector(".hero_video");
+
+        if (video) {
+            video.play().catch(error => {
+                console.warn("Autoplay was blocked, enabling user interaction.");
+                document.addEventListener("click", () => video.play(), { once: true });
+            });
+        }
+    });
+</script>
 
 </body>
 
