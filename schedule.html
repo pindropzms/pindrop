@@ -3,6 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script src="https://www.google.com/recaptcha/api.js?render=6Lep3v8qAAAAACEf0R0havKmbs3etLdYBMm4CuTe"></script>
+  <script>
+    const form = document.getElementById('my-form');
+    
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();  // Prevent form from submitting
+      
+      // Request reCAPTCHA token
+      grecaptcha.execute('6Lep3v8qAAAAACEf0R0havKmbs3etLdYBMm4CuTe', { action: 'submit' }).then((token) => {
+        // Add the token to the form data
+        const formData = new FormData(form);
+        formData.append('recaptchaToken', token);
+  
+        // Submit the form with the token
+        fetch('/submit', {
+          method: 'POST',
+          body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+          // Handle the server response
+          console.log(data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+      });
+    });
+  </script>
+ 
+
   <title>PinDrop.com/schedule a pickup</title>
 
 

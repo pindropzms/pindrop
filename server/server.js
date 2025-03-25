@@ -1,17 +1,20 @@
-require('dotenv').config(); // Load environment variables from .env
+import dotenv from 'dotenv'; // Load environment variables from .env
+import express from 'express'; // Express framework
+import bodyParser from 'body-parser'; // To parse incoming request bodies
+import cors from 'cors'; // For Cross-Origin Resource Sharing
+import { google } from 'googleapis'; // Google Sheets API client
+import fetch from 'node-fetch'; // Add fetch if not already included
 
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const { google } = require('googleapis');
-const path = require('path');
+dotenv.config(); // Load environment variables from .env
 
 const sheets = google.sheets('v4');
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
+const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY;
 
-const app = express();
+const app = express(); // Initialize Express app
 const port = process.env.PORT || 3000;
 
+// Middlewares
 app.use(cors());
 app.use(bodyParser.json());
 
@@ -33,10 +36,24 @@ const authenticate = async () => {
 
 app.post('/submit', async (req, res) => {
   const formData = req.body;
+  const recaptchaToken = formData.recaptchaToken;
+
+  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+  const recaptchaUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`;
+
   try {
+    const recaptchaResponse = await fetch(recaptchaUrl, {
+      method: 'POST',
+    });
+    const recaptchaData = await recaptchaResponse.json();
+
+    if (!recaptchaData.success || recaptchaData.score < 0.5) {  // Adjust threshold as necessary
+      return res.status(400).json({ success: false, error: 'reCAPTCHA verification failed or score too low.' });
+    }
+
+    // Proceed with your usual form processing here (Google Sheets write, etc.)
     await authenticate();
 
-    // Validate time range (8 AM - 4 PM)
     const [hours, minutes] = formData.time.split(':').map(Number);
     if (hours < 8 || hours >= 16) {
       return res.status(400).json({ success: false, error: 'Pickup time must be between 8:00 AM and 4:00 PM.' });
