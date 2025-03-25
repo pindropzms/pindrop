@@ -47,7 +47,8 @@ app.post('/submit', async (req, res) => {
     });
     const recaptchaData = await recaptchaResponse.json();
 
-    if (!recaptchaData.success || recaptchaData.score < 0.5) {  // Adjust threshold as necessary
+    // Check if reCAPTCHA was successful and the score is high enough (e.g., 0.5)
+    if (!recaptchaData.success || recaptchaData.score < 0.5) {
       return res.status(400).json({ success: false, error: 'reCAPTCHA verification failed or score too low.' });
     }
 
