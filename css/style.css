@@ -614,7 +614,7 @@ a:focus {
 @media (max-width: 600px) {
   .about_section3 .detail-box a {
     font-size: 18px; /* Increase font size for smaller screens */
-    padding: 12px 25px; /* Adjust padding for easier tapping */
+    padding: 20px 35px; /* Adjust padding for easier tapping */
   }
 }
 
