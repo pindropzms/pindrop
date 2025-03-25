@@ -5,34 +5,34 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <script src="https://www.google.com/recaptcha/api.js?render=6Lep3v8qAAAAACEf0R0havKmbs3etLdYBMm4CuTe"></script>
+
   <script>
-    const form = document.getElementById('my-form');
-    
-    form.addEventListener('submit', (event) => {
-      event.preventDefault();  // Prevent form from submitting
-      
-      // Request reCAPTCHA token
-      grecaptcha.execute('6Lep3v8qAAAAACEf0R0havKmbs3etLdYBMm4CuTe', { action: 'submit' }).then((token) => {
-        // Add the token to the form data
-        const formData = new FormData(form);
-        formData.append('recaptchaToken', token);
-  
-        // Submit the form with the token
-        fetch('/submit', {
-          method: 'POST',
-          body: formData,
-        })
-        .then(response => response.json())
-        .then(data => {
-          // Handle the server response
-          console.log(data);
-        })
-        .catch(error => {
-          console.error('Error:', error);
+    // reCAPTCHA v3 handling
+    grecaptcha.ready(function () {
+        grecaptcha.execute('6Lep3v8qAAAAACEf0R0havKmbs3etLdYBMm4CuTe', { action: 'submit' }).then(function (token) {
+            document.getElementById('contactForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                // Add token to form data and submit
+                const formData = new FormData(document.getElementById('contactForm'));
+                formData.append('recaptchaToken', token);
+
+                // Now submit the form (e.g., using fetch or XMLHttpRequest)
+                fetch('/submit', {
+                    method: 'POST',
+                    body: formData
+                }).then(response => response.json())
+                  .then(data => {
+                      if (data.success) {
+                          alert('Form submitted successfully!');
+                      } else {
+                          alert('reCAPTCHA verification failed or score too low.');
+                      }
+                  })
+                  .catch(error => alert('Error submitting form: ' + error));
+            });
         });
-      });
     });
-  </script>
+</script>
  
 
   <title>PinDrop.com/schedule a pickup</title>
@@ -149,7 +149,15 @@ img {
   max-width: 80px;
   height: auto;
 }
+.recaptcha-container {
+            margin-top: 20px; /* Ensures reCAPTCHA is spaced properly */
+            text-align: center;
+        }
 
+        /* Optional: Adjust the width of the reCAPTCHA widget */
+        .g-recaptcha {
+            display: inline-block;
+        }
 /* Media Queries for Responsiveness */
 
 /* For small screens (phones, tablets) */
@@ -366,6 +374,9 @@ img {
         <option value="Scented">Scented</option>
         <option value="Unscented">Unscented</option>
       </select>
+      <div class="recaptcha-container">
+        <div class="g-recaptcha" data-sitekey="6Lep3v8qAAAAACEf0R0havKmbs3etLdYBMm4CuTe"></div>
+    </div>
       <button type="submit">Schedule Pickup</button>
     </form>
   </div>
