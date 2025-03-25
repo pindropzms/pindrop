@@ -51,6 +51,7 @@ app.post('/submit', async (req, res) => {
       formData.time,
       formData.service,
       formData.site,
+      formData.scent,
       formData.delivery
     ]];
 
