@@ -594,13 +594,13 @@ a:focus {
   transform: translateY(0); /* Ensure no transformation */
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
-
 /* Default styles for the anchor links */
 .about_section3 .detail-box a {
-  font-size: 16px; /* Increase base font size */
-  padding: 10px 20px; /* Add padding to make the link easier to click */
+  font-size: 16px; /* Adjust font size */
+  padding: 10px 20px; /* Add padding for clickability */
   display: inline-block;
-  text-decoration: none; /* Remove underline if not needed */
+  text-decoration: none; /* Remove underline if needed */
+  margin-bottom: 15px; /* Add margin to the bottom of each link */
 }
 
 /* Hover effect */
@@ -613,10 +613,12 @@ a:focus {
 /* Mobile responsiveness */
 @media (max-width: 600px) {
   .about_section3 .detail-box a {
-    font-size: 18px; /* Increase font size for smaller screens */
-    padding: 25px 40px; /* Adjust padding for easier tapping */
+    font-size: 18px; /* Increase font size for mobile */
+    padding: 12px 25px; /* Adjust padding for better touch */
+    margin-bottom: 20px; /* Increased space between links on mobile */
   }
 }
+
 
 
 
