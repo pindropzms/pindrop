@@ -595,16 +595,29 @@ a:focus {
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
+/* Default styles for the anchor links */
 .about_section3 .detail-box a {
-  display: inline-block; /* Makes sure the links are treated as block-level elements */
-  margin-bottom: 20px; /* Adds space between the links */
+  font-size: 16px; /* Increase base font size */
+  padding: 10px 20px; /* Add padding to make the link easier to click */
+  display: inline-block;
+  text-decoration: none; /* Remove underline if not needed */
 }
 
+/* Hover effect */
 .about_section3 .detail-box a:hover {
   background: linear-gradient(135deg, #004c8c, #002f47);
   transform: translateY(-3px);
   box-shadow: 0 6px 15px rgba(0, 52, 113, 0.5);
 }
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .about_section3 .detail-box a {
+    font-size: 18px; /* Increase font size for smaller screens */
+    padding: 12px 25px; /* Adjust padding for easier tapping */
+  }
+}
+
 
 
 .about_section3 .img-box {
