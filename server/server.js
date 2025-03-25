@@ -47,10 +47,11 @@ app.post('/submit', async (req, res) => {
     });
     const recaptchaData = await recaptchaResponse.json();
 
-    // Check if reCAPTCHA was successful and the score is high enough (e.g., 0.5)
-    if (!recaptchaData.success || recaptchaData.score < 0.5) {
+    
+    if (!recaptchaData.success || recaptchaData.score < 0.3) {
       return res.status(400).json({ success: false, error: 'reCAPTCHA verification failed or score too low.' });
     }
+    
 
     // Proceed with your usual form processing here (Google Sheets write, etc.)
     await authenticate();
