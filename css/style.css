@@ -595,12 +595,17 @@ a:focus {
   transition: opacity 0.8s ease-out, transform 0.8s ease-out;
 }
 
+.about_section3 .detail-box a {
+  display: inline-block; /* Makes sure the links are treated as block-level elements */
+  margin-bottom: 10px; /* Adds space between the links */
+}
 
 .about_section3 .detail-box a:hover {
   background: linear-gradient(135deg, #004c8c, #002f47);
   transform: translateY(-3px);
   box-shadow: 0 6px 15px rgba(0, 52, 113, 0.5);
 }
+
 
 .about_section3 .img-box {
   display: flex;
