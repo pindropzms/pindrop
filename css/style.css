@@ -597,7 +597,7 @@ a:focus {
 
 .about_section3 .detail-box a {
   display: inline-block; /* Makes sure the links are treated as block-level elements */
-  margin-bottom: 10px; /* Adds space between the links */
+  margin-bottom: 20px; /* Adds space between the links */
 }
 
 .about_section3 .detail-box a:hover {
