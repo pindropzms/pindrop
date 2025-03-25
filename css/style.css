@@ -615,7 +615,7 @@ a:focus {
   .about_section3 .detail-box a {
     font-size: 18px; /* Increase font size for mobile */
     padding: 12px 25px; /* Adjust padding for better touch */
-    margin-bottom: 50px; /* Increased space between links on mobile */
+    margin-bottom: 80px; /* Increased space between links on mobile */
   }
 }
 
