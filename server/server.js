@@ -12,23 +12,22 @@ const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 const app = express();
 const port = process.env.PORT || 3000;
 
-// ✅ Define corsOptions first
+
 const corsOptions = {
   origin: 'https://pindropzm.com',
   methods: 'GET,POST,PUT,DELETE',
   allowedHeaders: 'Content-Type,Authorization'
 };
 
-// ✅ Use CORS only once
+
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
-// Health check endpoint for Render
+
 app.get('/healthz', (req, res) => {
   res.status(200).send('OK');
 });
 
-// Authenticate with Google Sheets API
 const authenticate = async () => {
   const auth = new google.auth.JWT(
     process.env.GOOGLE_CLIENT_EMAIL,
@@ -39,11 +38,9 @@ const authenticate = async () => {
   google.options({ auth });
 };
 
-// POST endpoint for form submission
 app.post('/submit', async (req, res) => {
   const formData = req.body;
 
-  // Validate required fields
   const requiredFields = ['name', 'email', 'phone', 'address', 'date', 'time', 'service', 'site', 'delivery'];
   for (let field of requiredFields) {
     if (!formData[field]) {
@@ -54,7 +51,7 @@ app.post('/submit', async (req, res) => {
   try {
     await authenticate();
 
-    // Validate time range (8 AM - 4 PM)
+  
     const [hours, minutes] = formData.time.split(':').map(Number);
     if (hours < 8 || hours >= 16) {
       return res.status(400).json({ success: false, error: 'Pickup time must be between 8:00 AM and 4:00 PM.' });
@@ -72,7 +69,6 @@ app.post('/submit', async (req, res) => {
       formData.delivery
     ]];
 
-    // ✅ Append data to the Google Sheet
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
       range: 'customer tracking!A2',
@@ -87,7 +83,7 @@ app.post('/submit', async (req, res) => {
   }
 });
 
-// Start the server
+
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
