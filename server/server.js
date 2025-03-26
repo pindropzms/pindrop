@@ -1,4 +1,4 @@
-require('dotenv').config(); 
+require('dotenv').config();
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -12,11 +12,15 @@ const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors({
-  origin: ['https://pindropzm.com', 'https://www.pindropzm.com'], 
-  methods: 'GET, POST',
-}));
+// ✅ Define corsOptions first
+const corsOptions = {
+  origin: 'https://pindropzm.com',
+  methods: 'GET,POST,PUT,DELETE',
+  allowedHeaders: 'Content-Type,Authorization'
+};
 
+// ✅ Use CORS only once
+app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 // Health check endpoint for Render
@@ -24,7 +28,7 @@ app.get('/healthz', (req, res) => {
   res.status(200).send('OK');
 });
 
-// Authenticate with Google Sheets API using environment variables
+// Authenticate with Google Sheets API
 const authenticate = async () => {
   const auth = new google.auth.JWT(
     process.env.GOOGLE_CLIENT_EMAIL,
@@ -35,10 +39,11 @@ const authenticate = async () => {
   google.options({ auth });
 };
 
+// POST endpoint for form submission
 app.post('/submit', async (req, res) => {
   const formData = req.body;
 
-  // Validate that all required fields are present
+  // Validate required fields
   const requiredFields = ['name', 'email', 'phone', 'address', 'date', 'time', 'service', 'site', 'delivery'];
   for (let field of requiredFields) {
     if (!formData[field]) {
@@ -55,7 +60,6 @@ app.post('/submit', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Pickup time must be between 8:00 AM and 4:00 PM.' });
     }
 
-    // Append data to Google Sheets
     const values = [[
       formData.name,
       formData.email,
@@ -68,17 +72,14 @@ app.post('/submit', async (req, res) => {
       formData.delivery
     ]];
 
-    // Specify the range for appending data dynamically (starting from the second row)
-    const range = 'customer tracking!A2'; // Start from A2 to avoid overwriting headers
-
+    // ✅ Append data to the Google Sheet
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
-      range: range,
+      range: 'customer tracking!A2',
       valueInputOption: 'RAW',
       resource: { values }
     });
 
-    // Respond with success
     res.json({ success: true });
   } catch (error) {
     console.error('Error writing to sheet:', error);
@@ -86,6 +87,7 @@ app.post('/submit', async (req, res) => {
   }
 });
 
+// Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
