@@ -14,7 +14,7 @@ const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY;
 const app = express(); // Initialize Express app
 const port = process.env.PORT || 3000;
 
-// Middlewares: Correct CORS usage (for testing, allow only your production domain)
+// Middlewares: Allow only your production domain for CORS
 app.use(cors({ origin: 'https://pindropzm.com' }));
 app.use(bodyParser.json());
 
@@ -47,12 +47,12 @@ app.post('/submit', async (req, res) => {
     });
     const recaptchaData = await recaptchaResponse.json();
 
-    // For reCAPTCHA v3, check success and score; for v2, only check success.
-    if (!recaptchaData.success || recaptchaData.score < 0.3) {
-      return res.status(400).json({ success: false, error: 'reCAPTCHA verification failed or score too low.' });
+    // For reCAPTCHA v2, we only check for success.
+    if (!recaptchaData.success) {
+      return res.status(400).json({ success: false, error: 'reCAPTCHA verification failed.' });
     }
 
-    // Proceed with form processing (e.g., writing to Google Sheets)
+    // Proceed with form processing (Google Sheets write, etc.)
     await authenticate();
 
     const [hours, minutes] = formData.time.split(':').map(Number);
@@ -80,7 +80,7 @@ app.post('/submit', async (req, res) => {
       resource: { values }
     });
 
-    // Send JSON success response to frontend
+    // Return success response as JSON (frontend will handle redirection)
     res.json({ success: true });
   } catch (error) {
     console.error('Error writing to sheet:', error);
