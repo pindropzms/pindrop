@@ -47,13 +47,12 @@ app.post('/submit', async (req, res) => {
     });
     const recaptchaData = await recaptchaResponse.json();
 
-    
+    // Verify reCAPTCHA success and score threshold
     if (!recaptchaData.success || recaptchaData.score < 0.3) {
       return res.status(400).json({ success: false, error: 'reCAPTCHA verification failed or score too low.' });
     }
-    
 
-    // Proceed with your usual form processing here (Google Sheets write, etc.)
+    // Proceed with form processing (e.g., writing to Google Sheets)
     await authenticate();
 
     const [hours, minutes] = formData.time.split(':').map(Number);
@@ -81,6 +80,7 @@ app.post('/submit', async (req, res) => {
       resource: { values }
     });
 
+    // Return success response to frontend (redirect will be handled on the frontend)
     res.json({ success: true });
   } catch (error) {
     console.error('Error writing to sheet:', error);
