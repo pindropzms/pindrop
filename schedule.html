@@ -6,43 +6,44 @@
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
   <script>
-
-async function handleSubmit(event) {
-  event.preventDefault();
-
-  const form = document.getElementById('pickupForm');
-  const recaptchaResponse = grecaptcha.getResponse();
-
-  if (!recaptchaResponse) {
-    alert('Please complete the reCAPTCHA verification.');
-    return;
-  }
-
-  const formData = new FormData(form);
-  formData.append('g-recaptcha-response', recaptchaResponse); // Send token to backend
-
-  try {
-    const response = await fetch('https://pindropzm.com/submit', {
-      method: 'POST',
-      body: formData
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      // Redirect to success page on frontend
-      window.location.href = 'success.html';
-    } else {
-      alert('Error: ' + result.error);
+    async function handleSubmit(event) {
+      event.preventDefault(); // Prevent the form from submitting the default way
+      console.log('Form is being submitted...'); // Debugging log
+    
+      const form = document.getElementById('pickupForm');
+      const recaptchaResponse = grecaptcha.getResponse();
+      
+      if (!recaptchaResponse) {
+        alert('Please complete the reCAPTCHA verification.');
+        return;
+      }
+    
+      const formData = new FormData(form);
+      formData.append('g-recaptcha-response', recaptchaResponse); // Send token to backend
+    
+      try {
+        const response = await fetch('https://pindropzm.com/submit', {
+          method: 'POST',
+          body: formData
+        });
+    
+        const result = await response.json();
+        console.log('Server Response:', result); // Debugging log
+    
+        if (result.success) {
+          // Redirect to success page on frontend
+          window.location.href = 'success.html';
+        } else {
+          alert('Error: ' + result.error);
+        }
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        alert('There was an error submitting the form. Please try again.');
+      }
     }
-  } catch (error) {
-    console.error('Error submitting form:', error);
-    alert('There was an error submitting the form. Please try again.');
-  }
-}
+    </script>
+    
 
-
-  </script>
 
   <title>PinDrop.com/schedule a pickup</title>
 
