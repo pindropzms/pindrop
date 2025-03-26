@@ -12,7 +12,12 @@ const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors());
+// CORS Configuration (Allow only the frontend domain)
+app.use(cors({
+  origin: 'https://pindrop.com', // Adjust to your actual frontend URL
+  methods: 'GET, POST',
+}));
+
 app.use(bodyParser.json());
 
 // Health check endpoint for Render
@@ -33,6 +38,15 @@ const authenticate = async () => {
 
 app.post('/submit', async (req, res) => {
   const formData = req.body;
+
+  // Validate that all required fields are present
+  const requiredFields = ['name', 'email', 'phone', 'address', 'date', 'time', 'service', 'site', 'delivery'];
+  for (let field of requiredFields) {
+    if (!formData[field]) {
+      return res.status(400).json({ success: false, error: `${field} is required.` });
+    }
+  }
+
   try {
     await authenticate();
 
@@ -42,6 +56,7 @@ app.post('/submit', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Pickup time must be between 8:00 AM and 4:00 PM.' });
     }
 
+    // Append data to Google Sheets
     const values = [[
       formData.name,
       formData.email,
@@ -54,13 +69,17 @@ app.post('/submit', async (req, res) => {
       formData.delivery
     ]];
 
+    // Specify the range for appending data dynamically (starting from the second row)
+    const range = 'customer tracking!A2'; // Start from A2 to avoid overwriting headers
+
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'customer tracking!A1',
+      range: range,
       valueInputOption: 'RAW',
       resource: { values }
     });
 
+    // Respond with success
     res.json({ success: true });
   } catch (error) {
     console.error('Error writing to sheet:', error);
