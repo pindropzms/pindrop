@@ -1,4 +1,4 @@
-require('dotenv').config(); // Load environment variables from .env
+require('dotenv').config(); 
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -12,9 +12,8 @@ const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 const app = express();
 const port = process.env.PORT || 3000;
 
-// CORS Configuration (Allow only the frontend domain)
 app.use(cors({
-  origin: '*', // Adjust to your actual frontend URL
+  origin: '*', 
   methods: 'GET, POST',
 }));
 
