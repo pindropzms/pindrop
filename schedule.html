@@ -44,10 +44,10 @@
           // Populate the address field with the link
           const addressField = document.getElementById('address');
           addressField.value = `location: ${locationLink}`;
-          
-          // Optionally, you can add an anchor tag to make it clickable directly
-          const locationField = document.getElementById('location-link');
-          locationField.innerHTML = `<a href="${locationLink}" target="_blank">View on Google Maps</a>`;
+          function getLocation() {
+
+}
+
         }, function(error) {
           alert('Error retrieving your location: ' + error.message);
         });
