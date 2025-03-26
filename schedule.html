@@ -15,10 +15,6 @@
         const response = await fetch('https://pindrop-iyxx.onrender.com/submit-form', {
           method: 'POST',
           body: JSON.stringify(formObject),
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${process.env.API_KEY}`
-          }
         });
 
         const result = await response.json();
