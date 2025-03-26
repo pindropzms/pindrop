@@ -3,321 +3,104 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://www.google.com/recaptcha/api.js"></script>
-
-  <script>
-    // reCAPTCHA v3 handling
-    grecaptcha.ready(function () {
-        grecaptcha.execute('6Ld4-f8qAAAAABTVrljD1KEHNvnD-CWPfccKoDw0', { action: 'submit' }).then(function (token) {
-            document.getElementById('contactForm').addEventListener('submit', function (e) {
-                e.preventDefault();
-                // Add token to form data and submit
-                const formData = new FormData(document.getElementById('contactForm'));
-                formData.append('recaptchaToken', token);
-
-                // Now submit the form (e.g., using fetch or XMLHttpRequest)
-                fetch('/submit', {
-                    method: 'POST',
-                    body: formData
-                }).then(response => response.json())
-                  .then(data => {
-                      if (data.success) {
-                          alert('Form submitted successfully!');
-                      } else {
-                          alert('reCAPTCHA verification failed or score too low.');
-                      }
-                  })
-                  .catch(error => alert('Error submitting form: ' + error));
-            });
-        });
-    });
-</script>
- 
-
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>  <!-- ✅ Using reCAPTCHA v2 -->
   <title>PinDrop.com/schedule a pickup</title>
+  
+  <script>
+    async function handleSubmit(event) {
+      event.preventDefault();
 
+      const form = document.getElementById('pickupForm');
+      const recaptchaResponse = grecaptcha.getResponse();
+
+      if (!recaptchaResponse) {
+        alert('Please complete the reCAPTCHA verification.');
+        return;
+      }
+
+      const formData = new FormData(form);
+      formData.append('g-recaptcha-response', recaptchaResponse); // ✅ Send token to backend
+
+      try {
+        const response = await fetch('https://pindropzm.com/submit', { // Change this to your backend URL
+          method: 'POST',
+          body: formData
+        });
+
+        const result = await response.json();
+        if (result.success) {
+          window.location.href = 'success.html';
+        } else {
+          alert('Error: ' + result.error);
+        }
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        alert('There was an error submitting the form. Please try again.');
+      }
+    }
+  </script>
 
   <style>
     /* General Styles */
-body {
-  font-family: "Arial", sans-serif;
-  background: linear-gradient(to bottom, #405a65, #299cb8, #00ffea);
-  color: #fff;
-  text-align: center;
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Container */
-.container {
-  width: 100%;
-  max-width: 400px;
-  background: rgba(255, 255, 255, 0.9);
-  padding: 15px; /* Reduced padding to fit content */
-  border-radius: 12px;
-  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
-  color: #435a64;
-  animation: fadeIn 0.6s ease-in-out;
-  text-align: left;
-  box-sizing: border-box;
-}
-
-/* Headings */
-h1, h2 {
-  text-align: center;
-  margin-bottom: 8px; /* Smaller margin */
-}
-
-h1 {
-  font-size: 18px; /* Smaller font size for heading */
-  color: #405a65;
-}
-
-h2 {
-  font-size: 12px; /* Smaller subheading font size */
-  color: #299cb8;
-  font-weight: normal;
-}
-
-/* Form */
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px; /* Equal spaces between form elements */
-}
-
-/* Input Fields */
-input, select, textarea {
-  width: 100%;
-  padding: 8px; /* Smaller padding */
-  border: 2px solid #299cb8;
-  border-radius: 8px;
-  font-size: 12px; /* Smaller font size for inputs */
-  background-color: rgba(255, 255, 255, 0.8);
-  outline: none;
-  transition: border-color 0.3s ease-in-out;
-  box-sizing: border-box;
-}
-
-input:focus, select:focus, textarea:focus {
-  border-color: #405a65;
-}
-
-/* Buttons */
-button {
-  background: linear-gradient(to right, #299cb8, #00ffea);
-  color: #fff;
-  padding: 10px;
-  font-size: 12px; /* Smaller font size for button */
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: all 0.3s ease-in-out;
-  width: 100%;
-}
-
-button:hover {
-  background: linear-gradient(to right, #405a65, #299cb8);
-  transform: scale(1.05);
-}
-
-/* Location Button */
-.location-btn {
-  background-color: #007bff;
-  font-size: 12px;
-  padding: 10px;
-  border-radius: 8px;
-  display: block;
-  width: 100%;
-  text-align: center;
-}
-
-.location-btn:hover {
-  background-color: #0056b3;
-}
-
-/* Images */
-img {
-  display: block;
-  margin: 0 auto 10px;
-  max-width: 80px;
-  height: auto;
-}
-.recaptcha-container {
-            margin-top: 20px; /* Ensures reCAPTCHA is spaced properly */
-            text-align: center;
-        }
-
-        /* Optional: Adjust the width of the reCAPTCHA widget */
-        .g-recaptcha {
-            display: inline-block;
-        }
-/* Media Queries for Responsiveness */
-
-/* For small screens (phones, tablets) */
-@media (max-width: 768px) {
-  .container {
-    padding: 10px; /* Reduced padding for smaller screens */
-    max-width: 90%;
-  }
-
-  h1 {
-    font-size: 16px; /* Smaller heading font size */
-  }
-
-  h2 {
-    font-size: 12px; /* Reduced subheading font size */
-  }
-
-  input, select, textarea {
-    padding: 6px; /* Smaller padding for input fields */
-    font-size: 10px; /* Smaller font size for inputs */
-  }
-
-  button {
-    padding: 10px;
-    font-size: 12px;
-  }
-
-  .location-btn {
-    font-size: 12px;
-    padding: 8px; /* Smaller padding for the location button */
-  }
-}
-
-/* For extra small screens (like mobile phones) */
-@media (max-width: 480px) {
-  .container {
-    padding: 5px; /* Further reduce padding for extra small screens */
-    max-width: 95%; /* Ensure the form takes most of the screen width */
-  }
-
-  h1 {
-    font-size: 14px; /* Smaller font size for h1 */
-  }
-
-  h2 {
-    font-size: 10px; /* Even smaller font size for h2 */
-  }
-
-  input, select, textarea {
-    padding: 6px; /* Reduce input padding even more */
-    font-size: 10px; /* Small font size for inputs */
-  }
-
-  button {
-    padding: 10px; /* Smaller button padding */
-    font-size: 12px; /* Smaller button font size */
-  }
-
-  .location-btn {
-    font-size: 12px;
-    padding: 8px; /* Smaller location button padding */
-  }
-}
-
-</style>
-  
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const timeInput = document.getElementById("time");
-
-      // Validate service scheduling time (between 8 AM and 4 PM)
-      timeInput.addEventListener("change", function () {
-        const selectedTime = this.value;
-        if (selectedTime) {
-          const parts = selectedTime.split(":");
-          if (parts.length < 2) {
-            alert("Invalid time format. Please use HH:MM format.");
-            this.value = "";
-            return;
-          }
-          const [hours, minutes] = parts.map(Number);
-          if (isNaN(hours) || isNaN(minutes)) {
-            alert("Invalid time format. Please use HH:MM format.");
-            this.value = "";
-            return;
-          }
-          // Validate the time range: Allow 8:00 to 16:00 (4:00 PM). Minutes past 16:00 are not allowed.
-          if (hours < 8 || hours > 16 || (hours === 16 && minutes > 0)) {
-            alert("Pickup time must be between 8:00 AM and 4:00 PM.");
-            this.value = "";
-          }
-        }
-      });
-    });
-
-    function getLocation() {
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          async function (position) {
-            let latitude = position.coords.latitude;
-            let longitude = position.coords.longitude;
-            let mapsLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
-            // Populate the address textarea with the raw link
-            document.getElementById('address').value = mapsLink;
-            console.log("Your location is:", mapsLink);
-          },
-          function (error) {
-            console.error("Error retrieving location:", error);
-            alert("Error retrieving location: " + error.message);
-          },
-          { 
-            enableHighAccuracy: true,
-            timeout: 10000,
-            maximumAge: 0
-          }
-        );
-      } else {
-        alert("Geolocation is not supported by this browser.");
-      }
+    body {
+      font-family: "Arial", sans-serif;
+      background: linear-gradient(to bottom, #405a65, #299cb8, #00ffea);
+      color: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-
-    async function handleSubmit(event) {
-  event.preventDefault();
-
-  const formData = new FormData(document.getElementById('pickupForm'));
-
-  const data = {};
-  formData.forEach((value, key) => {
-    data[key] = value;
-  });
-
-  try {
-    const response = await fetch('https://pindropzm.com/submit', { // Change this to your backend URL
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
-
-    const result = await response.json();
-    if (result.success) {
-      window.location.href = 'success.html';
-    } else {
-      alert('Error: ' + result.error);
+    .container {
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+      color: #435a64;
+      text-align: left;
     }
-  } catch (error) {
-    console.error('Error submitting form:', error);
-  }
-}
-
-
-  </script>
+    h1, h2 {
+      text-align: center;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 8px;
+      border: 2px solid #299cb8;
+      border-radius: 8px;
+      font-size: 12px;
+      background-color: rgba(255, 255, 255, 0.8);
+    }
+    button {
+      background: linear-gradient(to right, #299cb8, #00ffea);
+      color: #fff;
+      padding: 10px;
+      font-size: 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      width: 100%;
+    }
+    button:hover {
+      background: linear-gradient(to right, #405a65, #299cb8);
+      transform: scale(1.05);
+    }
+    .recaptcha-container {
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <form id="pickupForm" onsubmit="handleSubmit(event)">
-      <img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" alt="Logo">
       <h1>Schedule Pickup</h1>
       <h2>Pickups available from 8AM - 4PM ONLY</h2>
-      
+
       <label for="name">Full Name</label>
       <input type="text" id="name" name="name" required>
 
@@ -329,7 +112,6 @@ img {
 
       <label for="address">Pickup Address</label>
       <textarea id="address" name="address" rows="2" required></textarea>
-      <button type="button" class="location-btn" onclick="getLocation()">Use My Location</button>
 
       <label for="date">Pickup Date</label>
       <input type="date" id="date" name="date" required>
@@ -342,40 +124,17 @@ img {
         <option value="Not Selected">Select Option</option>
         <option value="carwash_1_5">Mobile Carwash (1-5)</option>
         <option value="carwash_5_10">Mobile Carwash (5-10)</option>
-        <option value="carwash_10_plus">Mobile Carwash (more than 10)</option>
         <option value="laundry_small">Mobile Laundry (small bag)</option>
         <option value="laundry_medium">Mobile Laundry (medium bag)</option>
         <option value="laundry_large">Mobile Laundry (large bag)</option>
-        <option value="monthly_package_1">Basic Monthly Package</option>
-        <option value="monthly_package_2">Standard Monthly Package </option>
-        <option value="monthly_package_3">Premium Monthly Package</option>
-        <option value="student_special">Students Special Offer</option>
-        <option value="Basic_Package1">Basic Carwash Package</option>
-        <option value="Basic_Package2">Premium Carwash Package</option>
-        <option value="Basic_Package3">Ultimate Carwash Package</option>
       </select>
-      
-      <label for="site">Select Site</label>
-      <select name="site" id="site" required>
-        <option value="Not Selected">Select Option</option>
-        <option value="On-Site (YOUR HOME)">On-Site (Your Home)</option>
-        <option value="Away">Away</option>
-      </select>
-      <label for="site">Service Delivery</label>
-      <select name="delivery" id="delivery" required>
-        <option value="Not Selected">Select Option for laundry Delivery </option>
-        <option value="Same day Service">Same day Service (6-10 hours)</option>
-        <option value="Next Day Service">Next Day Service (24 hours)</option>
-      </select>
-      <label for="site">Scented/Unscented</label>
-      <select name="scent" id="scent" required>
-        <option value="Not Selected">Do you want your laundry Scented or Unscented</option>
-        <option value="Scented">Scented</option>
-        <option value="Unscented">Unscented</option>
-      </select> 
-        <div class="g-recaptcha" data-sitekey="6Lep3v8qAAAAACEf0R0havKmbs3etLdYBMm4CuTe"></div>  <!-- reCAPTCHA v2 widget -->
-        <button type="submit">Submit</button>
-      </form>
+
+      <!-- ✅ reCAPTCHA v2 Widget -->
+      <div class="recaptcha-container">
+        <div class="g-recaptcha" data-sitekey="6Ld4-f8qAAAAABTVrljD1KEHNvnD-CWPfccKoDw0"></div>
+      </div>
+
+      <button type="submit">Submit</button>
     </form>
   </div>
 </body>
