@@ -13,9 +13,11 @@
 
       try {
         const response = await fetch('https://api.pindropzm.com/submit-form', {
-          method: 'POST',
-          body: JSON.stringify(formObject),
-        });
+  method: 'POST',
+  headers: { "Content-Type": "application/json" }, // Add this line
+  body: JSON.stringify(formObject),
+});
+
 
         const result = await response.json();
 

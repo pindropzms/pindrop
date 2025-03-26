@@ -12,12 +12,6 @@ const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(cors({
-  origin: 'https://pindropzm.com',  // Allow only your domain
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}));
-
 
 app.use(bodyParser.json());
 
@@ -35,7 +29,7 @@ const authenticate = async () => {
   google.options({ auth });
 };
 
-app.post('/submit', async (req, res) => {
+app.post('/submit-form', async (req, res) =>  {
   const formData = req.body;
 
   const requiredFields = ['name', 'email', 'phone', 'address', 'date', 'time', 'service', 'site', 'delivery'];
