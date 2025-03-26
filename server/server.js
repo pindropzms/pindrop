@@ -12,9 +12,8 @@ const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 const app = express();
 const port = process.env.PORT || 3000;
 
-
 const corsOptions = {
-  origin: 'https://pindropzm.com',
+  origin: 'https://pindropzm.com', 
   methods: 'GET,POST,PUT,DELETE',
   allowedHeaders: 'Content-Type,Authorization'
 };
@@ -23,6 +22,12 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://pindropzm.com');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
+  res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+  next();
+});
 
 app.get('/healthz', (req, res) => {
   res.status(200).send('OK');
