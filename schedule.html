@@ -275,7 +275,18 @@
       <select id="service" name="service" required>
         <option value="Not Selected">Select Option</option>
         <option value="carwash_1_5">Mobile Carwash (1-5)</option>
-        <!-- Add other options here -->
+        <option value="carwash_5_10">Mobile Carwash (5-10)</option>
+        <option value="carwash_10_plus">Mobile Carwash (more than 10)</option>
+        <option value="laundry_small">Mobile Laundry (small bag)</option>
+        <option value="laundry_medium">Mobile Laundry (medium bag)</option>
+        <option value="laundry_large">Mobile Laundry (large bag)</option>
+        <option value="monthly_package_1">Basic Monthly Package</option>
+        <option value="monthly_package_2">Standard Monthly Package </option>
+        <option value="monthly_package_3">Premium Monthly Package</option>
+        <option value="student_special">Students Special Offer</option>
+        <option value="Basic_Package1">Basic Carwash Package</option>
+        <option value="Basic_Package2">Premium Carwash Package</option>
+        <option value="Basic_Package3">Ultimate Carwash Package</option>
       </select>
       
       <label for="site">Select Site</label>
@@ -284,15 +295,13 @@
         <option value="On-Site (YOUR HOME)">On-Site (Your Home)</option>
         <option value="Away">Away</option>
       </select>
-
-      <label for="delivery">Service Delivery</label>
+      <label for="site">Service Delivery</label>
       <select name="delivery" id="delivery" required>
-        <option value="Not Selected">Select Option for laundry Delivery</option>
+        <option value="Not Selected">Select Option for laundry Delivery </option>
         <option value="Same day Service">Same day Service (6-10 hours)</option>
-        <!-- Add other options here -->
+        <option value="Next Day Service">Next Day Service (24 hours)</option>
       </select>
-
-      <label for="scent">Scented/Unscented</label>
+      <label for="site">Scented/Unscented</label>
       <select name="scent" id="scent" required>
         <option value="Not Selected">Do you want your laundry Scented or Unscented</option>
         <option value="Scented">Scented</option>
@@ -302,8 +311,9 @@
       <div class="recaptcha-container">
         <div class="g-recaptcha" data-sitekey="6Ld4-f8qAAAAABTVrljD1KEHNvnD-CWPfccKoDw0"></div>
       </div>
+  <button type="submit">Submit</button>
 
-      <button type="submit">Submit</button>
     </form>
   </div>
+</body>
 </html>
