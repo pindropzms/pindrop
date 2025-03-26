@@ -13,7 +13,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors({
-  origin: '*', 
+  origin: ['https://pindropzm.com', 'https://www.pindropzm.com'], 
   methods: 'GET, POST',
 }));
 
