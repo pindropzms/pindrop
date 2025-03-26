@@ -14,7 +14,7 @@ const port = process.env.PORT || 3000;
 
 // CORS Configuration (Allow only the frontend domain)
 app.use(cors({
-  origin: 'https://pindrop.com', // Adjust to your actual frontend URL
+  origin: '*', // Adjust to your actual frontend URL
   methods: 'GET, POST',
 }));
 
