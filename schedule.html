@@ -4,34 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
   <script>
+    // Submit handler for the form using reCAPTCHA v2
     async function handleSubmit(event) {
-      event.preventDefault(); // Prevent the form from submitting the default way
-      console.log('Form is being submitted...'); // Debugging log
-    
+      event.preventDefault();
+
       const form = document.getElementById('pickupForm');
+      // Get the reCAPTCHA token from the widget
       const recaptchaResponse = grecaptcha.getResponse();
-      
+
       if (!recaptchaResponse) {
         alert('Please complete the reCAPTCHA verification.');
         return;
       }
-    
+
       const formData = new FormData(form);
-      formData.append('g-recaptcha-response', recaptchaResponse); // Send token to backend
-    
+      formData.append('g-recaptcha-response', recaptchaResponse);
+
       try {
-        const response = await fetch('https://pindrop-iyxx.onrender.com', {
+        const response = await fetch('https://pindrop-iyxx.onrender.com/submit', { 
           method: 'POST',
           body: formData
         });
-    
+
         const result = await response.json();
-        console.log('Server Response:', result); // Debugging log
-    
         if (result.success) {
-          // Redirect to success page on frontend
           window.location.href = 'success.html';
         } else {
           alert('Error: ' + result.error);
@@ -41,7 +38,29 @@
         alert('There was an error submitting the form. Please try again.');
       }
     }
-    </script>
+
+    // Function to get location using the Geolocation API
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            let latitude = position.coords.latitude;
+            let longitude = position.coords.longitude;
+            let mapsLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
+            document.getElementById('address').value = mapsLink;
+            console.log("Your location is:", mapsLink);
+          },
+          function (error) {
+            console.error("Error retrieving location:", error);
+            alert("Error retrieving location: " + error.message);
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+        );
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+  </script>
     
 
 
