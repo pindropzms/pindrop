@@ -34,6 +34,33 @@
       }
     }
   </script>
+  <script>
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(position) {
+          // Extract the latitude and longitude from the position object
+          const latitude = position.coords.latitude;
+          const longitude = position.coords.longitude;
+          
+          // Create a Google Maps link based on latitude and longitude
+          const locationLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
+  
+          // Populate the address field with the link
+          const addressField = document.getElementById('address');
+          addressField.value = `location: ${locationLink}`;
+          
+          // Optionally, you can add an anchor tag to make it clickable directly
+          const locationField = document.getElementById('location-link');
+          locationField.innerHTML = `<a href="${locationLink}" target="_blank">View on Google Maps</a>`;
+        }, function(error) {
+          alert('Error retrieving your location: ' + error.message);
+        });
+      } else {
+        alert('Geolocation is not supported by this browser.');
+      }
+    }
+  </script>
+  
   <style>
     body {
       font-family: "Arial", sans-serif;
