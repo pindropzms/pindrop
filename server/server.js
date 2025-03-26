@@ -3,7 +3,7 @@ import express from 'express'; // Express framework
 import bodyParser from 'body-parser'; // To parse incoming request bodies
 import cors from 'cors'; // For Cross-Origin Resource Sharing
 import { google } from 'googleapis'; // Google Sheets API client
-import fetch from 'node-fetch'; // Add fetch if not already included
+import fetch from 'node-fetch'; // For HTTP requests
 
 dotenv.config(); // Load environment variables from .env
 
@@ -14,8 +14,8 @@ const RECAPTCHA_SECRET_KEY = process.env.RECAPTCHA_SECRET_KEY;
 const app = express(); // Initialize Express app
 const port = process.env.PORT || 3000;
 
-// Middlewares
-app.use(cors(origin: 'https://pindropzm.com'));
+// Middlewares: Correct CORS usage (for testing, allow only your production domain)
+app.use(cors({ origin: 'https://pindropzm.com' }));
 app.use(bodyParser.json());
 
 // Health check endpoint for Render
@@ -38,7 +38,7 @@ app.post('/submit', async (req, res) => {
   const formData = req.body;
   const recaptchaToken = formData.recaptchaToken;
 
-  const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+  const secretKey = RECAPTCHA_SECRET_KEY;
   const recaptchaUrl = `https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${recaptchaToken}`;
 
   try {
@@ -47,7 +47,7 @@ app.post('/submit', async (req, res) => {
     });
     const recaptchaData = await recaptchaResponse.json();
 
-    // Verify reCAPTCHA success and score threshold
+    // For reCAPTCHA v3, check success and score; for v2, only check success.
     if (!recaptchaData.success || recaptchaData.score < 0.3) {
       return res.status(400).json({ success: false, error: 'reCAPTCHA verification failed or score too low.' });
     }
@@ -80,7 +80,7 @@ app.post('/submit', async (req, res) => {
       resource: { values }
     });
 
-    // Return success response to frontend (redirect will be handled on the frontend)
+    // Send JSON success response to frontend
     res.json({ success: true });
   } catch (error) {
     console.error('Error writing to sheet:', error);
