@@ -12,11 +12,11 @@ const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 const app = express();
 const port = process.env.PORT || 3000;
 
-const corsOptions = {
-  origin: 'https://pindropzm.com', 
-  methods: 'GET,POST,PUT,DELETE',
-  allowedHeaders: 'Content-Type,Authorization'
-};
+app.use(cors({
+  origin: 'https://pindropzm.com',  // Allow only your domain
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
 
 
 app.use(cors(corsOptions));
