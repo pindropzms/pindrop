@@ -12,6 +12,7 @@ const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
 const app = express();
 const port = process.env.PORT || 3000;
 
+app.use(cors({ origin: ['https://pindropzm.com', 'https://www.pindropzm.com'] }));
 
 app.use(bodyParser.json());
 
@@ -29,7 +30,7 @@ const authenticate = async () => {
   google.options({ auth });
 };
 
-app.post('/submit-form', async (req, res) =>  {
+app.post('/submit-form', async (req, res) => {
   const formData = req.body;
 
   const requiredFields = ['name', 'email', 'phone', 'address', 'date', 'time', 'service', 'site', 'delivery'];
@@ -42,7 +43,6 @@ app.post('/submit-form', async (req, res) =>  {
   try {
     await authenticate();
 
-  
     const [hours, minutes] = formData.time.split(':').map(Number);
     if (hours < 8 || hours >= 16) {
       return res.status(400).json({ success: false, error: 'Pickup time must be between 8:00 AM and 4:00 PM.' });
@@ -73,7 +73,6 @@ app.post('/submit-form', async (req, res) =>  {
     res.status(500).json({ success: false, error: error.message });
   }
 });
-
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
