@@ -18,6 +18,15 @@
             align-items: center;
             min-height: 100vh;
         }
+        .logo {
+            display: block;
+            margin: 0 auto 20px; /* Center logo and add space below */
+            max-width: 80px;
+        }
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+          } 
         .container {
             width: 100%;
             max-width: 400px;
@@ -45,8 +54,8 @@
             gap: 15px;
         }
         input, select, textarea {
-            width: 90%;
-            padding: 8px;
+            width: 95%;
+            padding: 10px;
             border: 2px solid #299cb8;
             border-radius: 8px;
             font-size: 14px;
@@ -61,6 +70,8 @@
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
+            margin-top: 15px; /* Added space above */
+            width: 90%;
         }
         button:hover {
             background: linear-gradient(to right, #405a65, #299cb8);
@@ -72,8 +83,9 @@
             padding: 7px;
             border-radius: 8px;
             display: block;
-            width: 100%;
+            width: 90%;
             text-align: center;
+            margin-bottom: 15px; /* Added space below */
         }
 
     </style>
@@ -114,7 +126,9 @@
 <body>
     <div class="container">
         <form id="pickupForm" action="http://localhost:3000/submit" method="POST" onsubmit="handleSubmit(event)">
-            <img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" alt="Logo">
+          <div class="logo-container">
+            <img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" alt="Logo" class="logo">
+        </div>
             <h1>Schedule Pickup</h1>
             <h2>Pickups available from 9AM - 4PM ONLY</h2>
             
