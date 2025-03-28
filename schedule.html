@@ -104,7 +104,7 @@
             fetch('https://pindrop-iyxx.onrender.com/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formObject),
+                body: JSON.stringify(formData),
             })
             .then(response => response.json())
             .then(data => {
