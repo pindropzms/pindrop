@@ -1,215 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PinDrop.com/schedule a pickup</title>
-    <style>
-
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to bottom, #405a65, #299cb8, #00ffea);
-            color: #fff;
-            text-align: center;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-        .logo {
-            display: block;
-            margin: 0 auto 20px; 
-            max-width: 80px;
-        }
-        .logo-container {
-            text-align: center;
-            margin-bottom: 20px;
-          } 
-        .container {
-            width: 100%;
-            max-width: 400px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
-            color: #435a64;
-            text-align: left;
-        }
-        h1 {
-            font-size: 22px;
-            color: #405a65;
-            text-align: center;
-        }
-        h2 {
-            font-size: 14px;
-            color: #299cb8;
-            text-align: center;
-            font-weight: normal;
-        }
-        .form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        input, select, textarea {
-            width: 95%;
-            padding: 10px;
-            border: 2px solid #299cb8;
-            border-radius: 8px;
-            font-size: 14px;
-            background-color: rgba(255, 255, 255, 0.8);
-            outline: none;
-        }
-        button {
-            background: linear-gradient(to right, #299cb8, #00ffea);
-            color: #fff;
-            padding: 10px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 15px; 
-            width: 90%;
-        }
-        button:hover {
-            background: linear-gradient(to right, #405a65, #299cb8);
-            transform: scale(1.05);
-        }
-        .location-btn {
-            background-color: #007bff;
-            font-size: 12px;
-            padding: 7px;
-            border-radius: 8px;
-            display: block;
-            width: 90%;
-            text-align: center;
-            margin-bottom: 15px; 
-        }
-
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PinDrop.com/schedule a pickup</title>
+  <style>
+    /* Your existing CSS styles here... */
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #405a65, #299cb8, #00ffea);
+      color: #fff;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .logo { display: block; margin: 0 auto 20px; max-width: 80px; }
+    .logo-container { text-align: center; margin-bottom: 20px; }
+    .container {
+      width: 100%;
+      max-width: 400px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
+      color: #435a64;
+      text-align: left;
+    }
+    h1 { font-size: 22px; color: #405a65; text-align: center; }
+    h2 { font-size: 14px; color: #299cb8; text-align: center; font-weight: normal; }
+    .form { display: flex; flex-direction: column; gap: 15px; }
+    input, select, textarea {
+      width: 95%;
+      padding: 10px;
+      border: 2px solid #299cb8;
+      border-radius: 8px;
+      font-size: 14px;
+      background-color: rgba(255, 255, 255, 0.8);
+      outline: none;
+    }
+    button {
+      background: linear-gradient(to right, #299cb8, #00ffea);
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 15px;
+      width: 90%;
+    }
+    button:hover {
+      background: linear-gradient(to right, #405a65, #299cb8);
+      transform: scale(1.05);
+    }
+    .location-btn {
+      background-color: #007bff;
+      font-size: 12px;
+      padding: 7px;
+      border-radius: 8px;
+      display: block;
+      width: 90%;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+  </style>
+  
+  <script>
+    // Validation function for scheduling date and time
+    function validateSchedule(dateInput, timeInput) {
+      // Create a Date object from the provided date and time
+      const selectedDateTime = new Date(`${dateInput}T${timeInput}`);
+      const now = new Date();
+      
+      // Check if the selected date is in the past
+      if (selectedDateTime < now) {
+        alert("Please select a future date and time.");
+        return false;
+      }
+      
+      // Extract the hour from the selected time (0-23)
+      const selectedHour = selectedDateTime.getHours();
+      
+      // Check if time is before 8 AM or after (or at) 4 PM
+      if (selectedHour < 8 || selectedHour >= 16) {
+        alert("Please choose a time between 8 AM and 4 PM.");
+        return false;
+      }
+      
+      return true;
+    }
     
-
-    <script>
-        function handleSubmit(event) {
-            event.preventDefault();
-            const form = document.getElementById("pickupForm");
-            const formData = new FormData(form);
-            const formObject = {};
-            formData.forEach((value, key) => {
-                formObject[key] = value;
-            });
-
-            fetch('https://pindrop-iyxx.onrender.com/', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Server response:', data);
-                if (data.success) {
-                    window.location.href = 'success.html';
-                } else {
-                    alert('Error: ' + (data.error || 'Unknown error'));
-                }
-            })
-            .catch(error => {
-                console.error('Fetch error:', error);
-                alert("Error submitting form: " + error.message);
-            });
+    function handleSubmit(event) {
+      event.preventDefault();
+      
+      const form = document.getElementById("pickupForm");
+      const formData = new FormData(form);
+      // Create an object from the form data for easier manipulation
+      const formObject = {};
+      formData.forEach((value, key) => {
+        formObject[key] = value;
+      });
+      
+      // Validate the schedule date and time
+      if (!validateSchedule(formObject.date, formObject.time)) {
+        return; // Stop if validation fails
+      }
+      
+      // Now, send the validated data to the server.
+      // Note: Use formObject in the fetch body (not formData)
+      fetch('https://pindrop-iyxx.onrender.com/submit', {  
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formObject),
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Server response:', data);
+        if (data.success) {
+          window.location.href = 'success.html';
+        } else {
+          alert('Error: ' + (data.error || 'Unknown error'));
         }
-    </script>
+      })
+      .catch(error => {
+        console.error('Fetch error:', error);
+        alert("Error submitting form: " + error.message);
+      });
+    }
+  </script>
 
 </head>
 <body>
-    <div class="container">
-        <form id="pickupForm" action="http://localhost:3000/submit" method="POST" onsubmit="handleSubmit(event)">
-          <div class="logo-container">
-            <img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" alt="Logo" class="logo">
-        </div>
-            <h1>Schedule Pickup</h1>
-            <h2>Pickups available from 8AM - 4PM ONLY</h2>
-            
-            <label for="name">Full Name</label>
-            <input type="text" id="name" name="name" required>
+  <div class="container">
+    <form id="pickupForm" action="http://localhost:3000/submit" method="POST" onsubmit="handleSubmit(event)">
+      <div class="logo-container">
+        <img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" alt="Logo" class="logo">
+      </div>
+      <h1>Schedule Pickup</h1>
+      <h2>Pickups available from 8AM - 4PM ONLY</h2>
+      
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required>
 
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
 
-            <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone" required>
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" required>
 
-            <label for="address">Pickup Address</label>
-            <textarea id="address" name="address" rows="2" required></textarea>
-            <button type="button" class="location-btn" onclick="getLocation()">Use My Location</button>
+      <label for="address">Pickup Address</label>
+      <textarea id="address" name="address" rows="2" required></textarea>
+      <button type="button" class="location-btn" onclick="getLocation()">Use My Location</button>
 
-            <label for="date">Pickup Date</label>
-            <input type="date" id="date" name="date" required>
+      <label for="date">Pickup Date</label>
+      <input type="date" id="date" name="date" required>
 
-            <label for="time">Pickup Time</label>
-            <input type="time" id="time" name="time" required>
+      <label for="time">Pickup Time</label>
+      <input type="time" id="time" name="time" required>
 
-            <label for="service">Service</label>
-            <select id="service" name="service" required>
-              <option value="Not Selected">Select Option</option>
-              <option value="carwash_1_5">Mobile Carwash (1-5)</option>
-              <option value="carwash_5_10">Mobile Carwash (5-10)</option>
-              <option value="carwash_10_plus">Mobile Carwash (more than 10)</option>
-              <option value="laundry_small">Mobile Laundry (small bag)</option>
-              <option value="laundry_medium">Mobile Laundry (medium bag)</option>
-              <option value="laundry_large">Mobile Laundry (large bag)</option>
-              <option value="monthly_package_1">Basic Monthly Package</option>
-              <option value="monthly_package_2">Standard Monthly Package </option>
-              <option value="monthly_package_3">Premium Monthly Package</option>
-              <option value="student_special">Students Special Offer</option>
-              <option value="Basic_Package1">Basic Carwash Package</option>
-              <option value="Basic_Package2">Premium Carwash Package</option>
-              <option value="Basic_Package3">Ultimate Carwash Package</option>
+      <label for="service">Service</label>
+      <select id="service" name="service" required>
+        <option value="Not Selected">Select Option</option>
+        <option value="carwash_1_5">Mobile Carwash (1-5)</option>
+        <option value="carwash_5_10">Mobile Carwash (5-10)</option>
+        <option value="carwash_10_plus">Mobile Carwash (more than 10)</option>
+        <option value="laundry_small">Mobile Laundry (small bag)</option>
+        <option value="laundry_medium">Mobile Laundry (medium bag)</option>
+        <option value="laundry_large">Mobile Laundry (large bag)</option>
+        <option value="monthly_package_1">Basic Monthly Package</option>
+        <option value="monthly_package_2">Standard Monthly Package</option>
+        <option value="monthly_package_3">Premium Monthly Package</option>
+        <option value="student_special">Students Special Offer</option>
+        <option value="Basic_Package1">Basic Carwash Package</option>
+        <option value="Basic_Package2">Premium Carwash Package</option>
+        <option value="Basic_Package3">Ultimate Carwash Package</option>
+      </select>
 
-            </select>
+      <label for="site">Service Delivery</label>
+      <select name="delivery" id="delivery" required>
+        <option value="Not Selected">Select Option for laundry Delivery</option>
+        <option value="Same day Service">Same day Service (6-10 hours)</option>
+        <option value="Next Day Service">Next Day Service (24 hours)</option>
+      </select>
 
-            <label for="site">Service Delivery</label>
-            <select name="delivery" id="delivery" required>
-              <option value="Not Selected">Select Option for laundry Delivery </option>
-              <option value="Same day Service">Same day Service (6-10 hours)</option>
-              <option value="Next Day Service">Next Day Service (24 hours)</option>
-            </select>
-            <label for="site">Scented/Unscented</label>
-            <select name="scent" id="scent" required>
-              <option value="Not Selected">Do you want your laundry Scented or Unscented</option>
-              <option value="Scented">Scented</option>
-              <option value="Unscented">Unscented</option>
+      <label for="site">Scented/Unscented</label>
+      <select name="scent" id="scent" required>
+        <option value="Not Selected">Do you want your laundry Scented or Unscented</option>
+        <option value="Scented">Scented</option>
+        <option value="Unscented">Unscented</option>
+      </select>
 
-            </select>
+      <button type="submit">Schedule Pickup</button>
+    </form>
+  </div>
 
-            <button type="submit">Schedule Pickup</button>
-        </form>
-    </div>
-
-    <script>
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                    function (position) {
-                        let latitude = position.coords.latitude;
-                        let longitude = position.coords.longitude;
-                        let googleMapsLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
-                        document.getElementById('address').value = googleMapsLink;
-                        console.log("Location retrieved:", googleMapsLink);
-                    },
-                    function (error) {
-                        console.error("Error retrieving location:", error);
-                        alert("Error retrieving location: " + error.message);
-                    },
-                    { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
-                );
-            } else {
-                alert("Geolocation is not supported by this browser.");
-            }
-        }
-    </script>
+  <script>
+    function getLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          function (position) {
+            let latitude = position.coords.latitude;
+            let longitude = position.coords.longitude;
+            let googleMapsLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
+            document.getElementById('address').value = googleMapsLink;
+            console.log("Location retrieved:", googleMapsLink);
+          },
+          function (error) {
+            console.error("Error retrieving location:", error);
+            alert("Error retrieving location: " + error.message);
+          },
+          { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
+        );
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
+    }
+  </script>
 
 </body>
 </html>
