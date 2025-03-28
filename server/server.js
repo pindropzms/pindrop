@@ -6,6 +6,7 @@ const path = require('path');
 
 
 const sheets = google.sheets('v4');
+const credentials = JSON.parse(process.env.CREDENTIALS_JSON);
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
  
 
