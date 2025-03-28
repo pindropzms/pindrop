@@ -101,7 +101,7 @@
                 formObject[key] = value;
             });
 
-            fetch('http://localhost:3000/submit', {
+            fetch('https://pindrop-iyxx.onrender.com/', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formObject),
@@ -125,7 +125,7 @@
 </head>
 <body>
     <div class="container">
-        <form id="pickupForm" action="http://localhost:3000/submit" method="POST" onsubmit="handleSubmit(event)">
+        <form id="pickupForm" action="https://pindrop-iyxx.onrender.com/" method="POST" onsubmit="handleSubmit(event)">
           <div class="logo-container">
             <img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" alt="Logo" class="logo">
         </div>
