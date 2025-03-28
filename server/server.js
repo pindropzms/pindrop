@@ -4,20 +4,19 @@ const cors = require('cors');
 const { google } = require('googleapis');
 const path = require('path');
 
-// Google Sheets API setup
+
 const sheets = google.sheets('v4');
-const credentials = JSON.parse(process.env.CREDENTIALS_JSON);
 const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
  
 
-// Express server setup
+
 const app = express();
 const port = 3000;
 
 app.use(cors()); 
 app.use(bodyParser.json());
 
-// Authenticate Google API
+
 const authenticate = async () => {
   const { client_email, private_key } = credentials;
   const auth = new google.auth.JWT(
@@ -29,7 +28,7 @@ const authenticate = async () => {
   google.options({ auth });
 };
 
-// Endpoint to handle form submission
+
 app.post('/submit', async (req, res) => {
     const formData = req.body;
     try {
@@ -56,7 +55,7 @@ app.post('/submit', async (req, res) => {
 
         await sheets.spreadsheets.values.append({
             spreadsheetId: SPREADSHEET_ID,
-            range: 'customer tracking!A1', // Adjust this range to your sheet
+            range: 'customer tracking!A1', 
             valueInputOption: 'RAW',
             resource
         });
@@ -68,7 +67,7 @@ app.post('/submit', async (req, res) => {
     }
 });
 
-// Start the server
+
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
