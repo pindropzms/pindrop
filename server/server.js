@@ -1,31 +1,32 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const cors = require('cors'); // ✅ Import CORS
+const cors = require('cors'); 
 const { google } = require('googleapis');
 const path = require('path');
 
 // Google Sheets API setup
 const sheets = google.sheets('v4');
-const credentials = require('./credentials.json');
-const SPREADSHEET_ID = '1h3J4uyZvO3yAENDNg-j2CxMND7KcpHVeCBTHeyKs4eY'; // Your Google Spreadsheet ID
+const credentials = JSON.parse(process.env.CREDENTIALS_JSON);
+const SPREADSHEET_ID = process.env.SPREADSHEET_ID;
+ 
 
 // Express server setup
 const app = express();
 const port = 3000;
 
-app.use(cors()); // ✅ Enable CORS
+app.use(cors()); 
 app.use(bodyParser.json());
 
 // Authenticate Google API
 const authenticate = async () => {
-    const { client_email, private_key } = credentials;
-    const auth = new google.auth.JWT(
-        client_email,
-        null,
-        private_key,
-        ['https://www.googleapis.com/auth/spreadsheets']
-    );
-    google.options({ auth });
+  const { client_email, private_key } = credentials;
+  const auth = new google.auth.JWT(
+      client_email,
+      null,
+      private_key.replace(/\\n/g, '\n'), // 
+      ['https://www.googleapis.com/auth/spreadsheets']
+  );
+  google.options({ auth });
 };
 
 // Endpoint to handle form submission
