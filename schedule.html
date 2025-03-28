@@ -5,21 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PinDrop.com/schedule a pickup</title>
     <style>
-        /* General Styles */
+
         body {
-            font-family: "Arial", sans-serif;
+            font-family: Arial, sans-serif;
             background: linear-gradient(to bottom, #405a65, #299cb8, #00ffea);
             color: #fff;
             text-align: center;
             margin: 0;
             padding: 0;
-            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
         }
-    
-        /* Container */
         .container {
             width: 100%;
             max-width: 400px;
@@ -28,91 +26,56 @@
             border-radius: 12px;
             box-shadow: 0 3px 12px rgba(0, 0, 0, 0.3);
             color: #435a64;
-            animation: fadeIn 0.6s ease-in-out;
             text-align: left;
-            box-sizing: border-box;
         }
-    
-        /* Headings */
-        h1, h2 {
-            text-align: center;
-            margin-bottom: 10px;
-        }
-    
         h1 {
             font-size: 22px;
             color: #405a65;
+            text-align: center;
         }
-    
         h2 {
             font-size: 14px;
             color: #299cb8;
+            text-align: center;
             font-weight: normal;
         }
-    
-        /* Form */
         .form {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
         }
-    
         input, select, textarea {
-            width: 100%;
-            padding: 6px;
+            width: 90%;
+            padding: 8px;
             border: 2px solid #299cb8;
             border-radius: 8px;
             font-size: 14px;
             background-color: rgba(255, 255, 255, 0.8);
             outline: none;
-            transition: border-color 0.3s ease-in-out;
         }
-    
-        input:focus, select:focus, textarea:focus {
-            border-color: #405a65;
-        }
-    
-        /* Buttons */
         button {
             background: linear-gradient(to right, #299cb8, #00ffea);
             color: #fff;
-            padding: 8px;
-            font-size: 14px;
+            padding: 10px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            transition: all 0.3s ease-in-out;
         }
-    
         button:hover {
             background: linear-gradient(to right, #405a65, #299cb8);
             transform: scale(1.05);
         }
-    
-        /* Location Button */
         .location-btn {
-    background-color: #007bff;
-    font-size: 12px;
-    padding: 7px;
-    border-radius: 8px;
-    display: block;  /* Ensures it appears below */
-    width: 100%;  /* Makes it span the full width */
-    text-align: center; /* Centers the text */
-}
-
-    
-        .location-btn:hover {
-            background-color: #0056b3;
-        }
-    
-        /* Images */
-        img {
+            background-color: #007bff;
+            font-size: 12px;
+            padding: 7px;
+            border-radius: 8px;
             display: block;
-            margin: 0 auto 10px;
-            max-width: 80px;
-            height: auto;
+            width: 100%;
+            text-align: center;
         }
+
     </style>
     
 
