@@ -236,15 +236,16 @@
 
     // Discount detection: Check for the 'discount' URL parameter on page load
     document.addEventListener("DOMContentLoaded", () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.has("discount")) {
-        const discountValue = urlParams.get("discount");
-        const discountNotice = document.getElementById("discountNotice");
-        discountNotice.textContent = `A ${discountValue}% Discount has been applied!`;
-        // Set the hidden field's value so it's included in the form submission
-        document.getElementById("discount").value = discountValue;
-      }
-    });
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has("discount")) {
+    const discountValue = urlParams.get("discount");
+    const discountNotice = document.getElementById("discountNotice");
+    discountNotice.textContent = `A ${discountValue}% Discount has been applied!`;
+    // Set the hidden field's value so it's included in the form submission
+    document.getElementById("discount").value = discountValue;
+  }
+});
+
   </script>
 </body>
 </html>
