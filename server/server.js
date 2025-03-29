@@ -3,7 +3,6 @@ const bodyParser = require('body-parser');
 const { check, validationResult } = require('express-validator');
 const cors = require('cors');
 const { google } = require('googleapis');
-const crypto = require('crypto');
 const path = require('path');
 
 const sheets = google.sheets('v4');
@@ -27,66 +26,6 @@ const authenticate = async () => {
   );
   google.options({ auth });
 };
-
-// Generate a unique discount code
-const generateDiscountCode = () => {
-  return crypto.randomBytes(6).toString('hex').toUpperCase();
-};
-
-// Endpoint to generate and store the discount code
-app.get('/generate-code', async (req, res) => {
-  const code = generateDiscountCode();
-  try {
-    console.log("Generated Code:", code);  // Debugging: log the generated code
-    await authenticate();
-
-    // Storing the code in Google Sheets (adjust the range as needed)
-    const values = [[code, 'unused']];
-    const resource = { values };
-
-    await sheets.spreadsheets.values.append({
-      spreadsheetId: SPREADSHEET_ID,
-      range: 'discount_codes!K1', 
-      valueInputOption: 'RAW',
-      resource
-    });
-
-    res.json({ code });  // Send back the generated code as a response
-  } catch (error) {
-    console.error('Error generating code:', error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
-// Verify code endpoint
-app.get('/verify-code', async (req, res) => {
-  const { code } = req.query;  // The code passed as a query parameter
-  try {
-    await authenticate();
-
-    // Retrieve codes from Google Sheets and check if the code is valid
-    const response = await sheets.spreadsheets.values.get({
-      spreadsheetId: SPREADSHEET_ID,
-      range: 'discount_codes!K:L', // Codes in column K and status in column L
-    });
-
-    const codes = response.data.values;
-    const codeExists = codes.find(([storedCode]) => storedCode === code);
-
-    if (codeExists) {
-      const status = codeExists[1]; // Status in column L
-      if (status === 'unused') {
-        res.json({ success: true, message: 'Code is valid' });
-      } else {
-        res.status(400).json({ success: false, message: 'Code has already been used' });
-      }
-    } else {
-      res.status(400).json({ success: false, message: 'Invalid code' });
-    }
-  } catch (error) {
-    console.error('Error verifying code:', error);
-    res.status(500).json({ success: false, error: error.message });
-  }
-});
 
 // Endpoint to submit form data
 app.post(
@@ -141,7 +80,6 @@ app.post(
   }
 );
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });

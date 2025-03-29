@@ -67,31 +67,33 @@
       text-align: center;
       margin-bottom: 15px;
     }
+    /* Discount Notice Styling */
+    #discountNotice {
+      color: green;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 10px;
+    }
   </style>
   <script>
+    // Redirect /schedule.html to /schedule if necessary
     if (window.location.pathname === '/schedule.html') {
         window.location.replace('/schedule');
     }
-</script>
-
-  
+  </script>
   <script>
     // Validation function for scheduling date and time
     function validateSchedule(dateInput, timeInput) {
-      // Create a Date object from the provided date and time
       const selectedDateTime = new Date(`${dateInput}T${timeInput}`);
       const now = new Date();
       
-      // Check if the selected date is in the past
       if (selectedDateTime < now) {
         alert("Please select a future date and time.");
         return false;
       }
       
-      // Extract the hour from the selected time (0-23)
       const selectedHour = selectedDateTime.getHours();
       
-      // Check if time is before 8 AM or after (or at) 4 PM
       if (selectedHour < 8 || selectedHour >= 16) {
         alert("Please choose a time between 8 AM and 4 PM.");
         return false;
@@ -102,22 +104,17 @@
     
     function handleSubmit(event) {
       event.preventDefault();
-      
       const form = document.getElementById("pickupForm");
       const formData = new FormData(form);
-      // Create an object from the form data for easier manipulation
       const formObject = {};
       formData.forEach((value, key) => {
         formObject[key] = value;
       });
       
-      // Validate the schedule date and time
       if (!validateSchedule(formObject.date, formObject.time)) {
-        return; // Stop if validation fails
+        return;
       }
       
-      // Now, send the validated data to the server.
-      // Note: Use formObject in the fetch body (not formData)
       fetch('https://pindrop-iyxx.onrender.com/submit', {  
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -138,10 +135,11 @@
       });
     }
   </script>
-
 </head>
 <body>
   <div class="container">
+    <!-- Discount notice will be injected here if discount is applied -->
+    <div id="discountNotice"></div>
     <form id="pickupForm" action="http://localhost:3000/submit" method="POST" onsubmit="handleSubmit(event)">
       <div class="logo-container">
         <img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" alt="Logo" class="logo">
@@ -187,20 +185,20 @@
       </select>
 
       <label for="site">Site</label>
-<select name="site" id="site" required>
-  <option value="Not Selected">Select Option for laundry Delivery</option>
-  <option value="Your Home">Your Home</option>
-  <option value="PinDrop">PinDrop</option>
-</select>
+      <select name="site" id="site" required>
+        <option value="Not Selected">Select Option for laundry Delivery</option>
+        <option value="Your Home">Your Home</option>
+        <option value="PinDrop">PinDrop</option>
+      </select>
 
-      <label for="site">Service Delivery</label>
+      <label for="delivery">Service Delivery</label>
       <select name="delivery" id="delivery" required>
         <option value="Not Selected">Select Option for laundry Delivery</option>
         <option value="Same day Service">Same day Service (6-10 hours)</option>
         <option value="Next Day Service">Next Day Service (24 hours)</option>
       </select>
 
-      <label for="site">Scented/Unscented</label>
+      <label for="scent">Scented/Unscented</label>
       <select name="scent" id="scent" required>
         <option value="Not Selected">Do you want your laundry Scented or Unscented</option>
         <option value="Scented">Scented</option>
@@ -212,6 +210,7 @@
   </div>
 
   <script>
+    // Geolocation function remains the same
     function getLocation() {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -232,7 +231,17 @@
         alert("Geolocation is not supported by this browser.");
       }
     }
-  </script>
 
+    // Discount detection: Check for the 'discount' URL parameter on page load
+    document.addEventListener("DOMContentLoaded", () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has("discount")) {
+        const discountValue = urlParams.get("discount");
+        const discountNotice = document.getElementById("discountNotice");
+        discountNotice.textContent = `A ${discountValue}% Discount has been applied!`;
+        // Optional: You can adjust prices on the page if needed here.
+      }
+    });
+  </script>
 </body>
 </html>
