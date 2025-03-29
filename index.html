@@ -954,7 +954,8 @@
   // When "Apply Discount" is clicked, set a cookie and redirect
   document.getElementById("applyDiscount").addEventListener("click", () => {
     document.cookie = "discountClaimed=true; path=/; max-age=86400"; // 1 day expiration
-    window.location.href = "https://www.pindropzm.com/schedule-pickup?discount=10";
+    window.location.href = "https://pindropzm.com/schedule.html?discount=10";
+
   });
 
   document.getElementById("cancelPopup").addEventListener("click", closePopup);

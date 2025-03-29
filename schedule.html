@@ -141,6 +141,8 @@
     <!-- Discount notice will be injected here if discount is applied -->
     <div id="discountNotice"></div>
     <form id="pickupForm" action="http://localhost:3000/submit" method="POST" onsubmit="handleSubmit(event)">
+      <!-- Hidden input to capture discount value -->
+      <input type="hidden" id="discount" name="discount" value="">
       <div class="logo-container">
         <img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" alt="Logo" class="logo">
       </div>
@@ -239,7 +241,8 @@
         const discountValue = urlParams.get("discount");
         const discountNotice = document.getElementById("discountNotice");
         discountNotice.textContent = `A ${discountValue}% Discount has been applied!`;
-        // Optional: You can adjust prices on the page if needed here.
+        // Set the hidden field's value so it's included in the form submission
+        document.getElementById("discount").value = discountValue;
       }
     });
   </script>
