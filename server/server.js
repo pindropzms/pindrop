@@ -3,8 +3,8 @@ const bodyParser = require('body-parser');
 const { check, validationResult } = require('express-validator');
 const cors = require('cors'); 
 const { google } = require('googleapis');
+const crypto = require('crypto');
 const path = require('path');
-
 
 const sheets = google.sheets('v4');
 const credentials = JSON.parse(process.env.CREDENTIALS_JSON);
@@ -27,7 +27,64 @@ const authenticate = async () => {
   google.options({ auth });
 };
 
+// Generate a unique code
+const generateDiscountCode = () => {
+  return crypto.randomBytes(6).toString('hex').toUpperCase();
+};
 
+// Endpoint to generate and store code
+app.get('/generate-code', async (req, res) => {
+  const code = generateDiscountCode();
+  try {
+    await authenticate();
+    const values = [[code, 'unused']];
+    const resource = { values };
+
+    await sheets.spreadsheets.values.append({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'discount_codes!A1',
+      valueInputOption: 'RAW',
+      resource
+    });
+    
+    res.json({ code });
+  } catch (error) {
+    console.error('Error generating code:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Verify code
+app.get("/verify-code", async (req, res) => {
+  const { code } = req.query; // Assuming the code is sent as a query parameter
+  try {
+    await authenticate();
+
+    const response = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'discount_codes!K:L', // Discount code in column K, status in column L
+    });
+
+    const codes = response.data.values;
+    const codeExists = codes.find(([storedCode]) => storedCode === code);
+
+    if (codeExists) {
+      const status = codeExists[1]; // Status from column L
+      if (status === 'unused') {
+        res.json({ success: true, message: 'Code is valid' });
+      } else {
+        res.status(400).json({ success: false, message: 'Code has already been used' });
+      }
+    } else {
+      res.status(400).json({ success: false, message: 'Invalid code' });
+    }
+  } catch (error) {
+    console.error('Error verifying code:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
+// Submit form data
 app.post(
   '/submit',
   [
@@ -37,15 +94,12 @@ app.post(
     check('address').notEmpty().withMessage('Address is required'),
     check('date').isISO8601().withMessage('Please enter a valid date'),
     check('time').matches(/^(0[8-9]|1[0-6]):[0-5][0-9]$/).withMessage('Pickup time must be between 8:00 AM and 4:00 PM'),
-   
   ],
   async (req, res) => {
-
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ success: false, errors: errors.array() });
     }
-
 
     const formData = req.body;
     try {
@@ -82,7 +136,6 @@ app.post(
     }
   }
 );
-
 
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);

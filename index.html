@@ -860,6 +860,137 @@
         }
     });
 </script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Website</title>
+    <!-- Your other head content here -->
+    <style>
+      #promoPopup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(to bottom, #405a65, #299cb8, #00ffea);
+    padding: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: none;
+    z-index: 1000;
+    text-align: center;
+    border-radius: 10px;
+    width: 300px; /* Adjust for size */
+}
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 999;
+}
+#promoPopup button {
+    background-color: #005ea2; /* Vibrant orange */
+    color: #00ffea;
+    border: 2px solid #005ea2; /* Bold navy border */
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#promoPopup button:hover {
+    background-color: #005ea2; /* Change to navy on hover */
+    color: #bbb; /* Switch text to orange */
+    transform: scale(1.05); /* Slight scale effect */
+}
+
+#promoPopup #cancelPopup {
+    background-color: #005ea2; /* Light gray cancel button */
+    color: #00ffea;
+}
+
+#promoPopup #cancelPopup:hover {
+    background-color: #bbb; /* Darker gray on hover */
+}
+
+#countdown {
+    font-weight: bold;
+    color: #f44336; /* Red for countdown */
+}
+
+    </style>
+</head>
+<body>
+
+  <div class="overlay" id="overlay"></div>
+  <div id="promoPopup">
+      <h2>Limited Time Offer!</h2>
+      <p>Get 10% off your next pickup. Use the code:</p>
+      <h3 id="promoCode">Generating...</h3>
+      <p>Offer expires in <span id="countdown">60</span> seconds</p>
+      <button id="applyCode">Use Code</button>
+      <button id="cancelPopup">Cancel</button>
+  </div>
+  
+  <script>
+  // JavaScript to show the popup, get the discount code, and verify it
+  document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(() => {
+          document.getElementById("promoPopup").style.display = "block";
+          document.getElementById("overlay").style.display = "block";
+          fetchPromoCode();
+          startCountdown();
+      }, 5000);
+  });
+  
+  async function fetchPromoCode() {
+      const response = await fetch('/generate-code');
+      const data = await response.json();
+      document.getElementById("promoCode").textContent = data.code;
+  }
+  
+  function startCountdown() {
+      let timeLeft = 60;
+      const countdownElement = document.getElementById("countdown");
+      const interval = setInterval(() => {
+          timeLeft--;
+          countdownElement.textContent = timeLeft;
+          if (timeLeft <= 0) {
+              clearInterval(interval);
+              closePopup();
+          }
+      }, 1000);
+  }
+  
+  document.getElementById("applyCode").addEventListener("click", async () => {
+      const code = document.getElementById("promoCode").textContent;
+      const response = await fetch(`/verify-code?code=${code}`);
+      const data = await response.json();
+  
+      if (data.success) {
+          window.location.href = "https://www.pindropzm.com/schedule-pickup?code=" + code;
+      } else {
+          alert(data.message);
+      }
+  });
+  
+  document.getElementById("cancelPopup").addEventListener("click", closePopup);
+  
+  function closePopup() {
+      document.getElementById("promoPopup").style.display = "none";
+      document.getElementById("overlay").style.display = "none";
+  }
+  </script>
+  
+
+</body>
+</html>
 
 </body>
 
