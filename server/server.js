@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const { check, validationResult } = require('express-validator');
 const cors = require('cors');
 const { google } = require('googleapis');
-const path = require('path');
+require('dotenv').config();
 
 const sheets = google.sheets('v4');
 const credentials = JSON.parse(process.env.CREDENTIALS_JSON);
@@ -36,7 +36,9 @@ app.post(
     check('phone').notEmpty().withMessage('Phone number is required'),
     check('address').notEmpty().withMessage('Address is required'),
     check('date').isISO8601().withMessage('Please enter a valid date'),
-    check('time').matches(/^(0[8-9]|1[0-6]):[0-5][0-9]$/).withMessage('Pickup time must be between 8:00 AM and 4:00 PM'),
+    check('time')
+      .matches(/^(0[8-9]|1[0-6]):[0-5][0-9]$/)
+      .withMessage('Pickup time must be between 8:00 AM and 4:00 PM'),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -50,6 +52,7 @@ app.post(
 
       const values = [
         [
+          new Date().toLocaleString(), // Timestamp
           formData.name,
           formData.email,
           formData.phone,
@@ -60,6 +63,7 @@ app.post(
           formData.site,
           formData.delivery,
           formData.scent,
+          formData.discount || 'No Discount' // Handle empty discount case
         ]
       ];
 
@@ -69,10 +73,11 @@ app.post(
         spreadsheetId: SPREADSHEET_ID,
         range: 'customer tracking!A1', 
         valueInputOption: 'RAW',
-        resource
+        insertDataOption: 'INSERT_ROWS',
+        resource,
       });
 
-      res.json({ success: true });
+      res.json({ success: true, message: 'Data submitted successfully' });
     } catch (error) {
       console.error('Error writing to sheet:', error);
       res.status(500).json({ success: false, error: error.message });
