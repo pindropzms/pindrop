@@ -94,7 +94,7 @@ app.post('/generate-discount', async (req, res) => {
       resource
     });
 
-    res.redirect('/schedule.html'); 
+    res.redirect('/success.html'); 
 
   } catch (error) {
     console.error('Error generating discount code:', error);
