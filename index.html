@@ -852,6 +852,7 @@
         }
     });
 </script>
+
 <!-- Promo Popup Styles -->
 <style>
   #promoPopup {
@@ -888,6 +889,7 @@
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    margin: 5px;
   }
   #promoPopup button:hover {
     background-color: #005ea2;
@@ -922,21 +924,18 @@
 <script>
   document.addEventListener("DOMContentLoaded", async () => {
     const userEmail = localStorage.getItem("userEmail"); // Retrieve stored email (if available)
-
     if (!userEmail) return; // Don't show popup if email is unknown
 
     try {
-      const response = await fetch("https://your-backend.com/check-discount", {
+      const response = await fetch("https://pindrop-iyxx.onrender.com/check-discount", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: userEmail }),
       });
-
       const data = await response.json();
-
       if (data.alreadyUsed) {
         console.log("User already used the discount.");
-        return; // Don't show popup
+        return; // Don't show popup if discount already used
       }
 
       // Show the popup after 5 seconds if discount is available
@@ -965,30 +964,24 @@
 
   document.getElementById("applyDiscount").addEventListener("click", async () => {
     const userEmail = localStorage.getItem("userEmail");
-
     if (!userEmail) {
       alert("Please log in or enter your email first.");
       return;
     }
-
     try {
-      const response = await fetch("https://your-backend.com/generate-discount", {
+      const response = await fetch("https://pindrop-iyxx.onrender.com/generate-discount", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: userEmail }),
       });
-
       const data = await response.json();
-
       if (data.success) {
         const discountCode = data.discountCode;
         document.getElementById("discountCodeContainer").style.display = "block";
         document.getElementById("discountCode").textContent = discountCode;
-
         // Store discount usage locally
         localStorage.setItem("discountClaimed", "true");
-
-        // Redirect with the discount code
+        // Redirect with the discount code (or update the form if needed)
         window.location.href = `https://pindropzm.com/schedule.html?discount=${discountCode}`;
       } else {
         alert("Error: " + data.error);
