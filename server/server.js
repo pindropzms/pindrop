@@ -105,6 +105,36 @@ app.post('/generate-discount', async (req, res) => {
   }
 });
 
+// Endpoint to check if the discount was used by the user
+app.post('/check-discount', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    await authenticate();
+
+    // Get existing data from Google Sheets
+    const sheetData = await sheets.spreadsheets.values.get({
+      spreadsheetId: SPREADSHEET_ID,
+      range: 'customer tracking!A:L',
+    });
+
+    const rows = sheetData.data.values || [];
+    const headers = rows[0];
+    const emailIndex = headers.indexOf("Email");
+    const discountIndex = headers.indexOf("Used Discount");
+
+    const userRow = rows.find(row => row[emailIndex] === email);
+    if (userRow && userRow[discountIndex] === 'Yes') {
+      return res.json({ alreadyUsed: true });
+    }
+
+    res.json({ alreadyUsed: false });
+  } catch (error) {
+    console.error('Error checking discount usage:', error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Serve success.html
 app.get('/success.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'success.html'));
