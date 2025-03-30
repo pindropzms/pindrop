@@ -53,6 +53,24 @@
         window.location.replace('/success');
     }
 </script>
+<script>
+  // Get URL parameters to show the success or failure message
+  window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get("status");
+    const message = urlParams.get("message");
+
+    if (status === "success") {
+      document.getElementById("statusMessage").textContent = "Congratulations! " + message;
+      document.getElementById("statusMessage").style.color = "green";
+    } else {
+      document.getElementById("statusMessage").textContent = message;
+      document.getElementById("statusMessage").style.color = "red";
+    }
+  }
+</script>
+
+<div id="statusMessage"></div>
 
 </head>
 <body>
