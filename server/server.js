@@ -9,7 +9,7 @@ app.post('/generate-discount', async (req, res) => {
     // Get existing data from Google Sheets
     const sheetData = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'customer tracking!A:L', // Range includes columns A to L (1-12)
+      range: 'customer tracking!A:L',
     });
 
     const rows = sheetData.data.values || [];
@@ -59,8 +59,8 @@ app.post('/generate-discount', async (req, res) => {
       resource
     });
 
-    // Redirect user to success.html
-    res.redirect('/success.html');
+    // Return the discount code as part of the response
+    res.status(200).json({ success: true, discountCode });
 
   } catch (error) {
     console.error('Error generating discount code:', error);
