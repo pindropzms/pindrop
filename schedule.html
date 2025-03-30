@@ -141,12 +141,50 @@
 });
 
   </script>
+  <script>
+    function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition, showError);
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+}
+
+function showPosition(position) {
+  const latitude = position.coords.latitude;
+  const longitude = position.coords.longitude;
+
+  // Create a Google Maps link directly with the coordinates
+  const mapsLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
+
+  // Set the value of the #address textarea with the location link
+  document.getElementById("address").value = mapsLink;
+}
+
+function showError(error) {
+  switch(error.code) {
+    case error.PERMISSION_DENIED:
+      alert("User denied the request for Geolocation.");
+      break;
+    case error.POSITION_UNAVAILABLE:
+      alert("Location information is unavailable.");
+      break;
+    case error.TIMEOUT:
+      alert("The request to get user location timed out.");
+      break;
+    case error.UNKNOWN_ERROR:
+      alert("An unknown error occurred.");
+      break;
+  }
+}
+
+  </script>
 </head>
 <body>
   <div class="container">
     <!-- Discount notice will be injected here if discount is applied -->
     <div id="discountNotice"></div>
-    <form id="pickupForm" action="https://pindrop-iyxx.onrender.com/submit" method="POST" onsubmit="handleSubmit(event)">
+    <form action="https://pindrop-iyxx.onrender.com/generate-discount" method="POST" onsubmit="handleSubmit(event)">
       <!-- Hidden input to capture discount value -->
       <input type="hidden" id="discount" name="discount" value="">
       <div class="logo-container">
@@ -166,7 +204,7 @@
 
       <label for="address">Pickup Address</label>
       <textarea id="address" name="address" rows="2" required></textarea>
-      <button type="button" class="location-btn">Use My Location</button>
+      <button onclick="getLocation()">Get Location</button>
 
       <label for="date">Pickup Date</label>
       <input type="date" id="date" name="date" required>
