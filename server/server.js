@@ -1,10 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { check, validationResult } = require('express-validator');
 const cors = require('cors');
 const { google } = require('googleapis');
 const dotenv = require('dotenv');
 const crypto = require('crypto');
+const path = require('path');
 
 dotenv.config(); // Load environment variables
 
@@ -17,6 +17,7 @@ const port = 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public'))); // Serve static files (like success.html)
 
 // Authenticate with Google Sheets API
 const authenticate = async () => {
@@ -32,12 +33,12 @@ const authenticate = async () => {
 
 // Generate a unique discount code
 const generateDiscountCode = () => {
-  return 'DISCOUNT-' + crypto.randomBytes(3).toString('hex').toUpperCase(); // Example: DISCOUNT-AB12CD
+  return 'DISCOUNT-' + crypto.randomBytes(3).toString('hex').toUpperCase();
 };
 
 // Endpoint to generate and verify discount
 app.post('/generate-discount', async (req, res) => {
-  const formData = req.body; // Assuming form data includes all user info (e.g., name, email, phone, etc.)
+  const formData = req.body;
   const { email, phone } = formData;
 
   try {
@@ -46,7 +47,7 @@ app.post('/generate-discount', async (req, res) => {
     // Get existing data from Google Sheets
     const sheetData = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'customer tracking!A:L', // Adjust this if needed
+      range: 'customer tracking!A:L',
     });
 
     const rows = sheetData.data.values || [];
@@ -87,20 +88,26 @@ app.post('/generate-discount', async (req, res) => {
 
     const resource = { values };
 
-    
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
       range: 'customer tracking!A1',
       valueInputOption: 'RAW',
-      insertDataOption: 'INSERT_ROWS', 
+      insertDataOption: 'INSERT_ROWS',
       resource
     });
 
-    res.json({ success: true, discountCode });
+    // Redirect user to success.html
+    res.redirect('/success.html');
+
   } catch (error) {
     console.error('Error generating discount code:', error);
     res.status(500).json({ success: false, error: error.message });
   }
+});
+
+// Serve success.html
+app.get('/success.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'success.html'));
 });
 
 app.listen(port, () => {
