@@ -159,14 +159,14 @@
       <input type="text" id="name" name="name" required>
 
       <label for="email">Email</label>
-      <input type="email" id="email" name="email" required onblur="storeEmail()">
+      <input type="email" id="email" name="email" required>
 
       <label for="phone">Phone Number</label>
       <input type="tel" id="phone" name="phone" required>
 
       <label for="address">Pickup Address</label>
       <textarea id="address" name="address" rows="2" required></textarea>
-      <button type="button" class="location-btn" onclick="getLocation()">Use My Location</button>
+      <button type="button" class="location-btn">Use My Location</button>
 
       <label for="date">Pickup Date</label>
       <input type="date" id="date" name="date" required>
@@ -217,35 +217,34 @@
     </form>
   </div>
   <script>
-    // On form submission, check discount eligibility
     function handleSubmit(event) {
       event.preventDefault();
-      const form = document.getElementById("pickupForm");
-      const formData = new FormData(form);
-      const formObject = {};
-      formData.forEach((value, key) => {
-        formObject[key] = value;
-      });
-  
-      fetch('https://pindrop-iyxx.onrender.com/submit', {  
+    
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const name = document.getElementById('name').value;
+    
+      fetch('https://pindrop-iyxx.onrender.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formObject),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email,
+          phone: phone,
+          name: name,
+         
+        }),
       })
       .then(response => response.json())
       .then(data => {
-        if (data.success) {
-          window.location.href = 'success.html?status=success&message=Discount Applied';
-        } else {
-          window.location.href = 'success.html?status=failure&message=Discount Not Applied';
-        }
+        window.location.href = 'success.html?status=' + data.status;  // Use response status to show success/failure
       })
       .catch(error => {
-        console.error('Fetch error:', error);
-        alert("Error submitting form: " + error.message);
+        console.error('Error:', error);
       });
     }
-  </script>
+    </script>
   
 </body>
 </html>

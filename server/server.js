@@ -47,19 +47,19 @@ app.post('/generate-discount', async (req, res) => {
     // Get existing data from Google Sheets
     const sheetData = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'customer tracking!A:L',
+      range: 'customer tracking!A2:L',  // Ensure we are fetching data starting from row 2
     });
 
     const rows = sheetData.data.values || [];
-    const headers = rows[0]; // Assuming first row is headers
-    const emailIndex = headers.indexOf("Email");
-    const phoneIndex = headers.indexOf("Phone Number");
-    const discountIndex = 10; // Column K (11th column in zero-based index)
-    const statusIndex = 11;   // Column L (12th column in zero-based index)
+    const headers = rows[0]; // Row 2 will now be the header row because we're starting at A2
+    const emailIndex = headers.indexOf("email");
+    const phoneIndex = headers.indexOf("phone");
+    const discountIndex = headers.indexOf("discount");
+    const usedDiscountIndex = headers.indexOf("Used Discount");
 
     // Check if the user has already claimed the discount
-    const userExists = rows.some(row => 
-      (row[emailIndex] === email || row[phoneIndex] === phone) && row[discountIndex] === "Yes"
+    const userExists = rows.some(row =>
+      (row[emailIndex] === email || row[phoneIndex] === phone) && row[usedDiscountIndex] === "Yes"
     );
 
     if (userExists) {
@@ -82,8 +82,8 @@ app.post('/generate-discount', async (req, res) => {
         formData.site || '',
         formData.delivery || '',
         formData.scent || '',
-        discountCode, 
-        'No'  
+        discountCode,
+        'No'  // Initially, the discount is not used
       ]
     ];
 
@@ -91,7 +91,7 @@ app.post('/generate-discount', async (req, res) => {
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'customer tracking!A1',
+      range: 'customer tracking!A2', // Append starting from Row 2
       valueInputOption: 'RAW',
       insertDataOption: 'INSERT_ROWS',
       resource
@@ -116,16 +116,16 @@ app.post('/check-discount', async (req, res) => {
     // Get existing data from Google Sheets
     const sheetData = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'customer tracking!A:L',
+      range: 'customer tracking!A2:L', // Ensure we're fetching from Row 2 onwards
     });
 
     const rows = sheetData.data.values || [];
     const headers = rows[0];
-    const emailIndex = headers.indexOf("Email");
-    const discountIndex = headers.indexOf("Used Discount");
+    const emailIndex = headers.indexOf("email");
+    const usedDiscountIndex = headers.indexOf("Used Discount");
 
     const userRow = rows.find(row => row[emailIndex] === email);
-    if (userRow && userRow[discountIndex] === 'Yes') {
+    if (userRow && userRow[usedDiscountIndex] === 'Yes') {
       return res.json({ alreadyUsed: true });
     }
 
