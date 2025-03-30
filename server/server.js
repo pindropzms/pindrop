@@ -6,7 +6,7 @@ const dotenv = require('dotenv');
 const crypto = require('crypto');
 const path = require('path');
 
-dotenv.config(); // Load environment variables
+dotenv.config(); 
 
 const sheets = google.sheets('v4');
 const credentials = JSON.parse(process.env.CREDENTIALS_JSON);
@@ -17,9 +17,8 @@ const port = 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public'))); // Serve static files (like success.html)
+app.use(express.static(path.join(__dirname, 'public'))); 
 
-// Authenticate with Google Sheets API
 const authenticate = async () => {
   const { client_email, private_key } = credentials;
   const auth = new google.auth.JWT(
@@ -31,12 +30,11 @@ const authenticate = async () => {
   google.options({ auth });
 };
 
-// Generate a unique discount code
 const generateDiscountCode = () => {
   return 'DISCOUNT-' + crypto.randomBytes(3).toString('hex').toUpperCase();
 };
 
-// Endpoint to generate and verify discount
+
 app.post('/generate-discount', async (req, res) => {
   const formData = req.body;
   const { email, phone } = formData;
@@ -44,20 +42,19 @@ app.post('/generate-discount', async (req, res) => {
   try {
     await authenticate();
 
-    // Get existing data from Google Sheets
+   
     const sheetData = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'customer tracking!A2:L',  // Ensure we are fetching data starting from row 2
+      range: 'customer tracking!A2:L',  
     });
 
     const rows = sheetData.data.values || [];
-    const headers = rows[0]; // Row 2 will now be the header row because we're starting at A2
+    const headers = rows[0];
     const emailIndex = headers.indexOf("email");
     const phoneIndex = headers.indexOf("phone");
-    const discountIndex = headers.indexOf("discount");
     const usedDiscountIndex = headers.indexOf("Used Discount");
 
-    // Check if the user has already claimed the discount
+    
     const userExists = rows.some(row =>
       (row[emailIndex] === email || row[phoneIndex] === phone) && row[usedDiscountIndex] === "Yes"
     );
@@ -66,10 +63,10 @@ app.post('/generate-discount', async (req, res) => {
       return res.status(400).json({ success: false, error: "Discount already used by this user" });
     }
 
-    // Generate new discount code
+    
     const discountCode = generateDiscountCode();
 
-    // Append new data (including discount code) for this user
+    
     const values = [
       [
         formData.name,
@@ -83,7 +80,7 @@ app.post('/generate-discount', async (req, res) => {
         formData.delivery || '',
         formData.scent || '',
         discountCode,
-        'No'  // Initially, the discount is not used
+        'No'  
       ]
     ];
 
@@ -91,14 +88,13 @@ app.post('/generate-discount', async (req, res) => {
 
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'customer tracking!A2', // Append starting from Row 2
+      range: 'customer tracking!A2',
       valueInputOption: 'RAW',
       insertDataOption: 'INSERT_ROWS',
       resource
     });
 
-    // Redirect user to success.html
-    res.redirect('/schedule.html');
+    res.redirect('/schedule.html'); 
 
   } catch (error) {
     console.error('Error generating discount code:', error);
@@ -106,17 +102,17 @@ app.post('/generate-discount', async (req, res) => {
   }
 });
 
-// Endpoint to check if the discount was used by the user
+
 app.post('/check-discount', async (req, res) => {
   const { email } = req.body;
 
   try {
     await authenticate();
 
-    // Get existing data from Google Sheets
+    
     const sheetData = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'customer tracking!A2:L', // Ensure we're fetching from Row 2 onwards
+      range: 'customer tracking!A2:L',
     });
 
     const rows = sheetData.data.values || [];
@@ -136,9 +132,14 @@ app.post('/check-discount', async (req, res) => {
   }
 });
 
-// Serve success.html
+
 app.get('/schedule.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'schedule.html'));
+});
+
+app.post('/submit', async (req, res) => {
+  
+  res.redirect('/success.html');  
 });
 
 app.listen(port, () => {
