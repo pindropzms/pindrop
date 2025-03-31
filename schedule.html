@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PinDrop.com/schedule a pickup</title>
+  <title>PinDrop.com - Schedule a Pickup</title>
   <style>
-    /* Existing form styles */
+    /* Styles for the form */
     body {
       font-family: Arial, sans-serif;
       background: linear-gradient(to bottom, #405a65, #299cb8, #00ffea);
@@ -18,8 +18,6 @@
       align-items: center;
       min-height: 100vh;
     }
-    .logo { display: block; margin: 0 auto 20px; max-width: 80px; }
-    .logo-container { text-align: center; margin-bottom: 20px; }
     .container {
       width: 100%;
       max-width: 400px;
@@ -57,32 +55,13 @@
       background: linear-gradient(to right, #405a65, #299cb8);
       transform: scale(1.05);
     }
-    .location-btn {
-      background-color: #007bff;
-      font-size: 12px;
-      padding: 7px;
-      border-radius: 8px;
-      display: block;
-      width: 90%;
-      text-align: center;
-      margin-bottom: 15px;
-    }
   </style>
-  <script>
-    // Redirect /schedule.html to /schedule if necessary
-    if (window.location.pathname === '/schedule.html') {
-      window.location.replace('/schedule');
-    }
-  </script>
 </head>
 <body>
   <div class="container">
-    <div id="discountNotice"></div>
     <form id="pickupForm" class="form">
-      <!-- Hidden input to capture discount value if needed -->
-      <input type="hidden" id="discount" name="discount" value="">
-      <div class="logo-container">
-        <img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" alt="Logo" class="logo">
+      <div class="logo-container" style="text-align:center; margin-bottom:20px;">
+        <img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" alt="Logo" style="max-width:80px;">
       </div>
       <h1>Schedule Pickup</h1>
       <h2>Pickups available from 8AM - 4PM ONLY</h2>
@@ -148,8 +127,9 @@
       <button type="submit">Schedule Pickup</button>
     </form>
   </div>
+  
   <script>
-    // Validation function for scheduling date and time
+    // Validate that the pickup date and time are in the future and within allowed hours (8AM-4PM)
     function validateSchedule(dateInput, timeInput) {
       const selectedDateTime = new Date(`${dateInput}T${timeInput}`);
       const now = new Date();
@@ -179,7 +159,7 @@
         formObject[key] = value;
       });
       
-      // Validate date and time fields before submitting
+      // Validate date and time before sending
       if (!validateSchedule(formObject.date, formObject.time)) {
         return;
       }
@@ -191,27 +171,24 @@
           body: JSON.stringify(formObject)
         });
         
-        // Check if the response is OK and parse as JSON
-        if (!response.ok) {
-          const errData = await response.json();
-          alert("Error: " + (errData.error || "Unknown error"));
+        const data = await response.json();
+        if (!response.ok || !data.success) {
+          // Show error message (e.g., duplicate submission)
+          alert("Error: " + (data.error || "Discount not granted due to duplicate details."));
           return;
         }
-        const data = await response.json();
-        console.log('Server response:', data);
-        if (data.success) {
-          // Optionally pass discount code as query parameter if needed:
-          window.location.href = 'success.html?discount=' + (data.discountCode || '');
-        } else {
-          alert("Error: " + (data.error || "Unknown error"));
-        }
+        
+        // Redirect to success page with confirmation details and discount code in URL parameters
+        window.location.href = 'success.html?status=success&message=' +
+          encodeURIComponent(data.message) + '&discount=' +
+          encodeURIComponent(data.discountCode);
       } catch (error) {
         console.error('Fetch error:', error);
         alert("Error submitting form: " + error.message);
       }
     }
     
-    // Attach submit event handler
+    // Attach event handler to form
     document.getElementById("pickupForm").addEventListener("submit", handleSubmit);
     
     // Geolocation helper functions
@@ -246,15 +223,6 @@
           break;
       }
     }
-    
-    // Capture discount code from URL (if applicable) and store locally
-    document.addEventListener("DOMContentLoaded", () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const discountCode = urlParams.get("discount");
-      if (discountCode) {
-        localStorage.setItem("discountCode", discountCode);
-      }
-    });
   </script>
 </body>
 </html>

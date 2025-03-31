@@ -6,7 +6,7 @@ const dotenv = require('dotenv');
 const crypto = require('crypto');
 const path = require('path');
 
-dotenv.config(); 
+dotenv.config();
 
 const sheets = google.sheets('v4');
 const credentials = JSON.parse(process.env.CREDENTIALS_JSON);
@@ -17,7 +17,7 @@ const port = 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public'))); 
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Google API authentication
 const authenticate = async () => {
@@ -36,43 +36,46 @@ const generateDiscountCode = () => {
   return 'DISCOUNT-' + crypto.randomBytes(3).toString('hex').toUpperCase();
 };
 
-// Combined submission endpoint for discount generation and scheduling
+// Combined submission endpoint
 app.post('/submit', async (req, res) => {
   const formData = req.body;
-  const { email, phone } = formData;
+  const { name, email, phone } = formData;
   
   try {
     await authenticate();
-
-    // Retrieve existing sheet data
+    
+    // Retrieve sheet data; assuming first row is headers
     const sheetData = await sheets.spreadsheets.values.get({
       spreadsheetId: SPREADSHEET_ID,
-      range: 'customer tracking!A1:L',  // assuming first row contains headers
+      range: 'customer tracking!A1:L'
     });
     
     const rows = sheetData.data.values || [];
-    // Assuming headers are in the first row
     const headers = rows[0] || [];
+    const nameIndex = headers.indexOf("name");
     const emailIndex = headers.indexOf("email");
     const phoneIndex = headers.indexOf("phone");
     const usedDiscountIndex = headers.indexOf("Used Discount");
     
-    // Check if the user has already used a discount
-    const userExists = rows.slice(1).some(row =>
-      (row[emailIndex] === email || row[phoneIndex] === phone) && row[usedDiscountIndex] === "Yes"
+    // Check if the user already exists based on name, email, and phone and discount is already used
+    const duplicateUser = rows.slice(1).some(row =>
+      row[nameIndex] === name &&
+      row[emailIndex] === email &&
+      row[phoneIndex] === phone &&
+      row[usedDiscountIndex] === "Yes"
     );
     
-    if (userExists) {
-      return res.status(400).json({ success: false, error: "Discount already used by this user" });
+    if (duplicateUser) {
+      return res.status(400).json({ success: false, error: "Discount already granted for this user" });
     }
     
-    // Generate a new discount code
+    // Generate discount code if not a duplicate
     const discountCode = generateDiscountCode();
     
-    // Prepare row values
+    // Prepare row values to append
     const values = [
       [
-        formData.name,
+        name,
         email,
         phone,
         formData.address || '',
@@ -83,13 +86,12 @@ app.post('/submit', async (req, res) => {
         formData.delivery || '',
         formData.scent || '',
         discountCode,
-        'No'  // indicating discount not yet used
+        'No' // Initially mark discount as not used
       ]
     ];
     
     const resource = { values };
-
-    // Append the new row to the sheet
+    
     await sheets.spreadsheets.values.append({
       spreadsheetId: SPREADSHEET_ID,
       range: 'customer tracking!A2',
@@ -97,9 +99,9 @@ app.post('/submit', async (req, res) => {
       insertDataOption: 'INSERT_ROWS',
       resource
     });
-
-    // Respond with JSON instead of redirecting
-    res.json({ success: true, discountCode, message: "Pickup scheduled successfully" });
+    
+    // Respond with success and discount details
+    res.json({ success: true, discountCode, message: "Your discount has been granted" });
     
   } catch (error) {
     console.error('Error processing submission:', error);
@@ -107,12 +109,12 @@ app.post('/submit', async (req, res) => {
   }
 });
 
-// Serve schedule.html (if needed)
+// Serve schedule.html if needed
 app.get('/schedule.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'schedule.html'));
 });
 
-// Example success.html route (if you have a separate success page)
+// Serve success.html if needed
 app.get('/success.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'success.html'));
 });
