@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Success</title>
   <style>
     body {
-      font-family: "Arial", sans-serif;
+      font-family: Arial, sans-serif;
       background: linear-gradient(to bottom, #405a65, #299cb8, #00ffea);
       color: #fff;
       text-align: center;
@@ -47,39 +47,54 @@
     .home-button:hover {
       background-color: #0056b3;
     }
+    .status-message {
+      font-weight: bold;
+      margin-bottom: 15px;
+    }
   </style>
   <script>
+    // Optional: Redirect from /success.html to /success if needed.
     if (window.location.pathname === '/success.html') {
-        window.location.replace('/success');
+      window.location.replace('/success');
     }
-</script>
-<script>
-  // Get URL parameters to show the success or failure message
-  window.onload = function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const status = urlParams.get("status");
-    const message = urlParams.get("message");
-
-    if (status === "success") {
-      document.getElementById("statusMessage").textContent = "Congratulations! " + message;
-      document.getElementById("statusMessage").style.color = "green";
-    } else {
-      document.getElementById("statusMessage").textContent = message;
-      document.getElementById("statusMessage").style.color = "red";
-    }
-  }
-</script>
-
-<div id="statusMessage"></div>
-
+  </script>
 </head>
 <body>
   <div class="landing-container">
+    <!-- Status Message Section -->
+    <div id="statusMessage" class="status-message"></div>
+    
     <h1>Thank you for scheduling your pickup!</h1>
     <p>
-      We have received your request, and your pickup has been scheduled. You will be notified once it's confirmed. If you need to make any changes or check your schedule, feel free to reach out.
+      We have received your request, and your pickup has been scheduled. You will be notified once it's confirmed.
+      If you need to make any changes or check your schedule, feel free to reach out.
     </p>
+    <!-- Optionally show discount code if provided -->
+    <div id="discountInfo"></div>
     <a href="index.html" class="home-button">Go to Homepage</a>
   </div>
+
+  <script>
+    window.onload = function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const status = urlParams.get("status");
+      const message = urlParams.get("message");
+      const discount = urlParams.get("discount");
+      const statusMessageEl = document.getElementById("statusMessage");
+      const discountInfoEl = document.getElementById("discountInfo");
+      
+      if (status === "success") {
+        statusMessageEl.textContent = "Success: " + message;
+        statusMessageEl.style.color = "lightgreen";
+      } else if (status === "error") {
+        statusMessageEl.textContent = "Error: " + message;
+        statusMessageEl.style.color = "red";
+      }
+      
+      if (discount) {
+        discountInfoEl.innerHTML = `<p>Your discount code is: <strong>${discount}</strong></p>`;
+      }
+    }
+  </script>
 </body>
 </html>

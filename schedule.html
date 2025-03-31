@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PinDrop.com/schedule a pickup</title>
   <style>
     /* Existing form styles */
@@ -67,14 +67,87 @@
       text-align: center;
       margin-bottom: 15px;
     }
-
   </style>
   <script>
     // Redirect /schedule.html to /schedule if necessary
     if (window.location.pathname === '/schedule.html') {
-        window.location.replace('/schedule');
+      window.location.replace('/schedule');
     }
   </script>
+</head>
+<body>
+  <div class="container">
+    <div id="discountNotice"></div>
+    <form id="pickupForm" class="form">
+      <!-- Hidden input to capture discount value if needed -->
+      <input type="hidden" id="discount" name="discount" value="">
+      <div class="logo-container">
+        <img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" alt="Logo" class="logo">
+      </div>
+      <h1>Schedule Pickup</h1>
+      <h2>Pickups available from 8AM - 4PM ONLY</h2>
+      
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required>
+  
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" required>
+  
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" name="phone" required>
+  
+      <label for="address">Pickup Address</label>
+      <textarea id="address" name="address" rows="2" required></textarea>
+      <button type="button" onclick="getLocation()">Get Location</button>
+  
+      <label for="date">Pickup Date</label>
+      <input type="date" id="date" name="date" required>
+  
+      <label for="time">Pickup Time</label>
+      <input type="time" id="time" name="time" required>
+  
+      <label for="service">Service</label>
+      <select id="service" name="service" required>
+        <option value="Not Selected">Select Option</option>
+        <option value="carwash_1_5">Mobile Carwash (1-5)</option>
+        <option value="carwash_5_10">Mobile Carwash (5-10)</option>
+        <option value="carwash_10_plus">Mobile Carwash (more than 10)</option>
+        <option value="laundry_small">Mobile Laundry (small bag)</option>
+        <option value="laundry_medium">Mobile Laundry (medium bag)</option>
+        <option value="laundry_large">Mobile Laundry (large bag)</option>
+        <option value="monthly_package_1">Basic Monthly Package</option>
+        <option value="monthly_package_2">Standard Monthly Package</option>
+        <option value="monthly_package_3">Premium Monthly Package</option>
+        <option value="student_special">Students Special Offer</option>
+        <option value="Basic_Package1">Basic Carwash Package</option>
+        <option value="Basic_Package2">Premium Carwash Package</option>
+        <option value="Basic_Package3">Ultimate Carwash Package</option>
+      </select>
+  
+      <label for="site">Site</label>
+      <select name="site" id="site" required>
+        <option value="Not Selected">Select Option for laundry Delivery</option>
+        <option value="Your Home">Your Home</option>
+        <option value="PinDrop">PinDrop</option>
+      </select>
+  
+      <label for="delivery">Service Delivery</label>
+      <select name="delivery" id="delivery" required>
+        <option value="Not Selected">Select Option for laundry Delivery</option>
+        <option value="Same day Service">Same day Service (6-10 hours)</option>
+        <option value="Next Day Service">Next Day Service (24 hours)</option>
+      </select>
+  
+      <label for="scent">Scented/Unscented</label>
+      <select name="scent" id="scent" required>
+        <option value="Not Selected">Do you want your laundry Scented or Unscented</option>
+        <option value="Scented">Scented</option>
+        <option value="Unscented">Unscented</option>
+      </select>
+  
+      <button type="submit">Schedule Pickup</button>
+    </form>
+  </div>
   <script>
     // Validation function for scheduling date and time
     function validateSchedule(dateInput, timeInput) {
@@ -95,9 +168,10 @@
       return true;
     }
     
-    // Form submission handler
-    function handleSubmit(event) {
+    // Main form submission handler
+    async function handleSubmit(event) {
       event.preventDefault();
+      
       const form = document.getElementById("pickupForm");
       const formData = new FormData(form);
       const formObject = {};
@@ -105,184 +179,82 @@
         formObject[key] = value;
       });
       
+      // Validate date and time fields before submitting
       if (!validateSchedule(formObject.date, formObject.time)) {
         return;
       }
       
-      fetch('https://pindrop-iyxx.onrender.com/submit', {  
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formObject),
-      })
-      .then(response => response.json())
-      .then(data => {
+      try {
+        const response = await fetch('https://pindrop-iyxx.onrender.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formObject)
+        });
+        
+        // Check if the response is OK and parse as JSON
+        if (!response.ok) {
+          const errData = await response.json();
+          alert("Error: " + (errData.error || "Unknown error"));
+          return;
+        }
+        const data = await response.json();
         console.log('Server response:', data);
         if (data.success) {
-          window.location.href = 'schedule.html';
+          // Optionally pass discount code as query parameter if needed:
+          window.location.href = 'success.html?discount=' + (data.discountCode || '');
         } else {
-          alert('Error: ' + (data.error || 'Unknown error'));
+          alert("Error: " + (data.error || "Unknown error"));
         }
-      })
-      .catch(error => {
+      } catch (error) {
         console.error('Fetch error:', error);
         alert("Error submitting form: " + error.message);
-      });
+      }
     }
-    document.addEventListener("DOMContentLoaded", () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const discountCode = urlParams.get("discount");
-
-  if (discountCode) {
-    // You can store it in a variable or use it in your form processing logic
-    localStorage.setItem("discountCode", discountCode);  // Storing the discount code locally
-
-    // You can now use localStorage.getItem('discountCode') elsewhere in your page if needed
-  }
-});
-
-  </script>
-  <script>
+    
+    // Attach submit event handler
+    document.getElementById("pickupForm").addEventListener("submit", handleSubmit);
+    
+    // Geolocation helper functions
     function getLocation() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showPosition, showError);
-  } else {
-    alert("Geolocation is not supported by this browser.");
-  }
-}
-
-function showPosition(position) {
-  const latitude = position.coords.latitude;
-  const longitude = position.coords.longitude;
-
-  // Create a Google Maps link directly with the coordinates
-  const mapsLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
-
-  // Set the value of the #address textarea with the location link
-  document.getElementById("address").value = mapsLink;
-}
-
-function showError(error) {
-  switch(error.code) {
-    case error.PERMISSION_DENIED:
-      alert("User denied the request for Geolocation.");
-      break;
-    case error.POSITION_UNAVAILABLE:
-      alert("Location information is unavailable.");
-      break;
-    case error.TIMEOUT:
-      alert("The request to get user location timed out.");
-      break;
-    case error.UNKNOWN_ERROR:
-      alert("An unknown error occurred.");
-      break;
-  }
-}
-
-  </script>
-</head>
-<body>
-  <div class="container">
-    <!-- Discount notice will be injected here if discount is applied -->
-    <div id="discountNotice"></div>
-    <form action="https://pindrop-iyxx.onrender.com/generate-discount" method="POST" onsubmit="handleSubmit(event)">
-      <!-- Hidden input to capture discount value -->
-      <input type="hidden" id="discount" name="discount" value="">
-      <div class="logo-container">
-        <img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" alt="Logo" class="logo">
-      </div>
-      <h1>Schedule Pickup</h1>
-      <h2>Pickups available from 8AM - 4PM ONLY</h2>
-      
-      <label for="name">Full Name</label>
-      <input type="text" id="name" name="name" required>
-
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required>
-
-      <label for="phone">Phone Number</label>
-      <input type="tel" id="phone" name="phone" required>
-
-      <label for="address">Pickup Address</label>
-      <textarea id="address" name="address" rows="2" required></textarea>
-      <button onclick="getLocation()">Get Location</button>
-
-      <label for="date">Pickup Date</label>
-      <input type="date" id="date" name="date" required>
-
-      <label for="time">Pickup Time</label>
-      <input type="time" id="time" name="time" required>
-
-      <label for="service">Service</label>
-      <select id="service" name="service" required>
-        <option value="Not Selected">Select Option</option>
-        <option value="carwash_1_5">Mobile Carwash (1-5)</option>
-        <option value="carwash_5_10">Mobile Carwash (5-10)</option>
-        <option value="carwash_10_plus">Mobile Carwash (more than 10)</option>
-        <option value="laundry_small">Mobile Laundry (small bag)</option>
-        <option value="laundry_medium">Mobile Laundry (medium bag)</option>
-        <option value="laundry_large">Mobile Laundry (large bag)</option>
-        <option value="monthly_package_1">Basic Monthly Package</option>
-        <option value="monthly_package_2">Standard Monthly Package</option>
-        <option value="monthly_package_3">Premium Monthly Package</option>
-        <option value="student_special">Students Special Offer</option>
-        <option value="Basic_Package1">Basic Carwash Package</option>
-        <option value="Basic_Package2">Premium Carwash Package</option>
-        <option value="Basic_Package3">Ultimate Carwash Package</option>
-      </select>
-
-      <label for="site">Site</label>
-      <select name="site" id="site" required>
-        <option value="Not Selected">Select Option for laundry Delivery</option>
-        <option value="Your Home">Your Home</option>
-        <option value="PinDrop">PinDrop</option>
-      </select>
-
-      <label for="delivery">Service Delivery</label>
-      <select name="delivery" id="delivery" required>
-        <option value="Not Selected">Select Option for laundry Delivery</option>
-        <option value="Same day Service">Same day Service (6-10 hours)</option>
-        <option value="Next Day Service">Next Day Service (24 hours)</option>
-      </select>
-
-      <label for="scent">Scented/Unscented</label>
-      <select name="scent" id="scent" required>
-        <option value="Not Selected">Do you want your laundry Scented or Unscented</option>
-        <option value="Scented">Scented</option>
-        <option value="Unscented">Unscented</option>
-      </select>
-
-      <button type="submit">Schedule Pickup</button>
-    </form>
-  </div>
-  <script>
-    function handleSubmit(event) {
-      event.preventDefault();
-    
-      const email = document.getElementById('email').value;
-      const phone = document.getElementById('phone').value;
-      const name = document.getElementById('name').value;
-    
-      fetch('https://pindrop-iyxx.onrender.com/submit', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: email,
-          phone: phone,
-          name: name,
-         
-        }),
-      })
-      .then(response => response.json())
-      .then(data => {
-        window.location.href = 'success.html?status=' + data.status;  // Use response status to show success/failure
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+      } else {
+        alert("Geolocation is not supported by this browser.");
+      }
     }
-    </script>
-  
+    
+    function showPosition(position) {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      const mapsLink = `https://www.google.com/maps?q=${latitude},${longitude}`;
+      document.getElementById("address").value = mapsLink;
+    }
+    
+    function showError(error) {
+      switch(error.code) {
+        case error.PERMISSION_DENIED:
+          alert("User denied the request for Geolocation.");
+          break;
+        case error.POSITION_UNAVAILABLE:
+          alert("Location information is unavailable.");
+          break;
+        case error.TIMEOUT:
+          alert("The request to get user location timed out.");
+          break;
+        case error.UNKNOWN_ERROR:
+          alert("An unknown error occurred.");
+          break;
+      }
+    }
+    
+    // Capture discount code from URL (if applicable) and store locally
+    document.addEventListener("DOMContentLoaded", () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const discountCode = urlParams.get("discount");
+      if (discountCode) {
+        localStorage.setItem("discountCode", discountCode);
+      }
+    });
+  </script>
 </body>
 </html>
