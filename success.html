@@ -71,8 +71,9 @@
     We have received your request, and your pickup has been scheduled. You will be notified once it's confirmed.
     If you need to make any changes or check your schedule, feel free to reach out.
   </p>
-  <!-- Discount Code Information -->
-  <div id="discountInfo"></div>
+<div id="statusMessage" class="status-message"></div>
+<div id="discountInfo"></div>
+
   <a href="index.html" class="home-button">Go to Homepage</a>
 </div>
 
@@ -82,23 +83,30 @@
     const status = urlParams.get("status");
     const message = urlParams.get("message");
     const discount = urlParams.get("discount");
+    
     const statusMessageEl = document.getElementById("statusMessage");
     const discountInfoEl = document.getElementById("discountInfo");
-    
+
     if (status === "success") {
-      statusMessageEl.textContent = "Success: " + message;
-      statusMessageEl.style.color = "lightgreen";
+      statusMessageEl.textContent = "✅ " + message;
+      statusMessageEl.style.color = "green";
     } else if (status === "error") {
-      statusMessageEl.textContent = "Error: " + message;
+      statusMessageEl.textContent = "⚠️ " + message;
       statusMessageEl.style.color = "red";
     }
-    
+
     if (discount) {
       discountInfoEl.innerHTML = `<p>Your discount code is: <strong>${discount}</strong></p>`;
     } else {
-      discountInfoEl.innerHTML = `<p>Discount Aleardy Used!</p>`;
+      discountInfoEl.innerHTML = `<p>No discount code was granted.</p>`;
     }
   }
 </script>
+
+<!-- Status Message -->
+<div id="statusMessage" class="status-message"></div>
+<!-- Discount Information -->
+<div id="discountInfo"></div>
+
 </body>
 
