@@ -52,16 +52,12 @@ app.post('/submit', async (req, res) => {
     
     const rows = sheetData.data.values || [];
     const headers = rows[0] || [];
-    const nameIndex = headers.indexOf("name");
     const emailIndex = headers.indexOf("email");
-    const phoneIndex = headers.indexOf("phone");
     const usedDiscountIndex = headers.indexOf("Used Discount");
     
     // Check if the user already exists and discount is already used
     const duplicateUser = rows.slice(1).some(row =>
-      row[nameIndex] === name &&
       row[emailIndex] === email &&
-      row[phoneIndex] === phone &&
       row[usedDiscountIndex] === "Used"
     );
     
