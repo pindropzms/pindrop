@@ -11,38 +11,121 @@
 
   <title>Homepage</title>
 
-<!-- Bootstrap CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.3/css/bootstrap.min.css">
-
-
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-
-<!-- Owl Carousel -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
-
-<!-- Nice Select -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" />
-
-<!-- Font Awesome (Latest Stable) -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
-
-<!-- Custom Styles -->
-<link href="css/style.css" rel="stylesheet" />
-<link href="css/responsive.css" rel="stylesheet" />
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- Bootstrap JS -->
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.3/js/bootstrap.bundle.min.js"></script>
 
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Owl Carousel -->
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+  <!-- Nice Select -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha256-mLBIhmBvigTFWPSCtvdu6a76T+3Xyt+K571hupeFLg4=" crossorigin="anonymous" />
+
+  <!-- Font Awesome (Only ONE version, latest stable) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <!-- Custom Styles -->
+  <link href="css/style.css" rel="stylesheet" />
+  <link href="css/responsive.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/css/nice-select.min.css" integrity="sha256-mLBIhmBvigTFWPSCtvdu6a76T+3Xyt+K571hupeFLg4=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link href="css/font-awesome.min.css" rel="stylesheet" />
+
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+</head>
+<style>
+ /* Allow dropdowns to overflow parent containers */
+.header_bottom,
+.custom_nav-container,
+.navbar,
+.hero_area {
+  overflow: visible !important;
+}
+
+/* Positioning context for dropdown */
+.nav-item.dropdown {
+  position: relative;
+}
+
+/* Base dropdown styling */
+.nav-item.dropdown .dropdown-menu {
+  position: absolute;          /* remove from flow */
+  top: 100%;                   /* sit below trigger */
+  left: 0;
+  display: block;              /* keep it in the DOM for transitions */
+  padding: 0.5rem 0;           /* vertical padding */
+  margin: 0.25rem 0 0;         /* small gap below link */
+  list-style: none;
+  background-color: #ffffff;   /* white background */
+  border-radius: 0.5rem;       /* rounded corners */           
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* soft drop shadow *
+  
+  /* prepare for fade & slide animation */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition:
+    opacity 0.3s ease,         /* fade in/out */          
+    transform 0.3s ease;        /* slide up/down */
+  z-index: 2000;
+}
+
+/* Link styles inside dropdown */
+.nav-item.dropdown .dropdown-menu li a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #333333;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;               
+}
+
+.nav-item.dropdown .dropdown-menu li a:hover {
+  background-color: #f5f5f5; /* light gray hover */
+}
+
+/* Show the dropdown (on hover or via Bootstrap “show” class) */
+.nav-item.dropdown:hover > .dropdown-menu,
+.nav-item.dropdown.show > .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+</style>
 <script>
-    if (window.location.pathname === '/index.html') {
-        window.location.replace('/index');
-    }
+  document.addEventListener('DOMContentLoaded', function() {
+    const dropdown = document.querySelector('.nav-item.dropdown');
+    const trigger   = dropdown.querySelector('.nav-link');
+
+    trigger.addEventListener('click', function(e) {
+      // Prevent following the href on first tap
+      e.preventDefault();
+      dropdown.classList.toggle('show');
+    });
+
+    // Close if clicking outside
+    document.addEventListener('click', function(e) {
+      if (!dropdown.contains(e.target)) {
+        dropdown.classList.remove('show');
+      }
+    });
+  });
 </script>
 
-</head>
 
 
 <body>
@@ -64,11 +147,11 @@
               <i class="fa fa-map-marker" aria-hidden="true"></i>
               <span>Lusaka, Zambia</span>
             </a>
-            <a href="">
-              <i class="fa fa-phone" aria-hidden="true"></i>
-              <span>+260774857950</span>
-            </a>
-            <a href="">
+            <a href="tel:+260774857950" class="link-box">
+                  <i class="fa fa-phone" aria-hidden="true"></i>
+                  <span>Call +260-774-8-57950</span>
+                 </a>
+            <a href="mailto:pindropzm@outlook.com" class="link-box">
               <i class="fa fa-envelope" aria-hidden="true"></i>
               <span>pindropzm@outlook.com</span>
             </a>
@@ -102,20 +185,24 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav  ">
+              <li class="nav-item ">
+                  <a class="nav-link" href="index.html">Home <span class="sr-only">Home</span></a>
+                </li>
+                <li class="nav-item dropdown">
+                 <a class="nav-link" href="service.html"><b>SERVICES</b></a>
+                 <ul class="dropdown-menu">
+                 <li><a href="laundry.html">Laundry</a></li>
+                 <li><a href="cleaning.html">Cleaning</a></li>
+                 <li><a href="carwash.html">Carwash</a></li>
+              </ul>
+              </li>
                 <li class="nav-item active">
-                  <a class="nav-link" href="index.html"><b>HOME</b> <span class="sr-only">(current)</span></a>
+                  <a class="nav-link" href="about.html"> About</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="service.html"><b>SERVICES</b></a>
+                  <a class="nav-link" href="contact.html">Contact Us</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="about.html"><b>ABOUT</b></a>
-                </li>
-               
-                <li class="nav-item">
-                  <a class="nav-link" href="contact.html"><b>CONTACT US</b></a>
-                </li>
-                  </a>
             </div>
           </nav>
         </div>
@@ -131,12 +218,12 @@
               <div class="detail-box">
                 <h1>
                   We Deliver <br />
-                  Excellent Laundry and <br />
+                  Excellent Laundry, Cleaning and<br />
                   Carwash Services
                 </h1>
                 <div class="btn-box">
-                  <a href="pricing.html" class="btn1">
-                    View Our Pricing
+                  <a href="about.html" class="btn1">
+                    Read More
                   </a>
                   <a href="schedule.html" class="btn2">
                     Schedule a Pick Up 
@@ -154,11 +241,11 @@
                   Reliable
                 </h1>
                 <div class="btn-box">
-                  <a href="about.html" class="btn1">
-                    Read More
+                  <a href="pricing.html" class="btn1">
+                    View Our Pricing
                   </a>
                   <a href="" class="btn2">
-                    Schedule a Pick Up <link rel="stylesheet" href="schedule.html">
+                    Schedule a service <link rel="stylesheet" href="schedule.html">
                   </a>
                 </div>
               </div>
@@ -172,8 +259,8 @@
                   With Us Today<br />
                 </h1>
                 <div class="btn-box">
-                  <a href="pricing.html" class="btn1">
-                    View Our Pricing
+                  <a href="about.html" class="btn1">
+                    Read More
                   </a>
                   <a href="schedule.html" class="btn2">
                     Schedule a Pick Up
@@ -206,22 +293,24 @@
         <div class="col-md-6">
           <div class="detail-box">
             <div class="heading_container">
-              <h2>Welcome to <span>PinDrop!</span></h2>
+              <h2>Welcome to <span>PinDrop Express Cleaning!</span></h2>
               <div>
                 <p>
-                  We are a registered company in Zambia that offers laundry and carwash services on-site (YOUR Home) and away.
-                  With well trained and experienced personnel, we deliver excellent services right at your doorstep.
-                  Why worry when you can have our services spotlessly pindropped right at your doorstep!
-                  Get in Touch with us today!  
+                  PinDrop is a fully registered Zambian company offering professional mobile laundry, house cleaning and on-site car wash services throughout Lusaka, 
+                  delivered right to your doorstep. Our convenient laundry pick-up and delivery service ensures your clothes receive expert care, 
+                  with free collection and return across all Lusaka neighborhoods. As the best mobile laundry service in Lusaka, we guarantee fresh, 
+                  crisp garments without you ever leaving home. Our on-demand mobile car wash brings professional exterior and interior cleaning, 
+                  polishing and waxing directly to your driveway or office parking lot. We also provide comprehensive house cleaning packages, 
+                  including deep cleaning, sanitizing and upholstery care for homes and offices. With experienced, well-trained staff using eco-friendly, 
+                  fabric-safe detergents and cleaning agents, every service is spotlessly pindropped to you. Experience unmatched convenience and quality 
+                  from the leading mobile laundry, cleaning and car wash service in Lusaka—get in touch with PinDrop today and say goodbye to chores!
+
                 </p>
               </div>
             </div>
             <a href="schedule.html">
-              Schedule a pickup
+              Schedule a service
             </a>
-              <a href="pricing.html">
-                View Our Prices
-              </a>
           </div>
         </div>
         <div class="col-md-6 ">
@@ -251,7 +340,7 @@
               <img src="images/young-african-american-man-doing-laundry.jpg" alt="Laundry Service" />
               <div class="btn_overlay">
                 <a href="schedule.html">
-                  Schedule A Pickup
+                  Schedule A Service
                 </a>
               </div>
             </div>
@@ -263,7 +352,7 @@
               <img src="images/car-wash-detailing-station.jpg" alt="Car Wash Service" />
               <div class="btn_overlay">
                 <a href="schedule.html">
-                  Schedule A Pickup
+                  Schedule A Service
                 </a>
               </div>
             </div>
@@ -275,7 +364,7 @@
               <img src="images/optimized_beautiful-car-washing-service.jpg" alt="Detailing Service" />
               <div class="btn_overlay">
                 <a href="schedule.html">
-                  Schedule A Pickup
+                  Schedule A Service
                 </a>
               </div>
             </div>
@@ -287,7 +376,7 @@
               <img src="images/car-wash-detailing-station.jpg" alt="Cleaning Service" />
               <div class="btn_overlay">
                 <a href="schedule.html">
-                  Schedule A Pickup
+                  Schedule A Service
                 </a>
               </div>
             </div>
@@ -299,7 +388,7 @@
               <img src="images/optimized_cheerful-african-american-woman-with-towels.jpg" alt="Dry Cleaning Service" />
               <div class="btn_overlay">
                 <a href="schedule.html">
-                  Schedule A Pickup
+                  Schedule A Service
                 </a>
               </div>
             </div>
@@ -311,7 +400,7 @@
               <img src="images/optimized_front-view-pile-towels-with-iron.jpg" alt="Ironing Service" />
               <div class="btn_overlay">
                 <a href="schedule.html">
-                  Schedule A Pickup
+                  Schedule A Service
                 </a>
               </div>
             </div>
@@ -320,319 +409,134 @@
       </div>
     </div>
   </section>
+  
+  <!-- end portfolio section -->
 
-  <section class="how-it-works">
-    <div class="container">
-      <header class="section-header">
-        <h2>How It Works</h2>
-        <p>Explore our seamless process for delivering excellent laundry and carwash services.</p>
-      </header>
-      <div class="tabs">
-        <button class="tab-btn active" data-tab="laundry">Laundry Service</button>
-        <button class="tab-btn" data-tab="carwash">Carwash Service</button>
+  <!-- How It Works -->
+
+  <section class="service_section layout_padding">
+    <div class="container ">
+      <div class="heading_container heading_center">
+        <h2>How<span> It Works</span></h2>
+        <h3>LAUNDRY SERVICE</h3>
       </div>
-      <div class="tab-panel active" id="laundry">
-        <article class="step">
-          <div class="step-img">
-            <img src="images/Copy of announcing the marriage of.png" alt="Schedule a Pickup">
+      <div class="row">
+        <div class="col-sm-6 col-md-4">
+          <div class="box ">
+            <div class="img-box">
+              <img src="images/Copy of announcing the marriage of.png" alt="" />
+            </div>
+            <div class="detail-box">
+              <h5>
+                Schedule a Pickup
+              </h5>
+              <p>
+                  <li>Booking: Use our user-friendly website or app to choose your pickup day.</li>
+                  <li>Pack your bags: Continue to use your Clean Drop bags if you’re a returning customer.</li>
+                  <li>Welcome, New Users: A 13-gallon kitchen trash bag is equivalent to our branded Clean Drop bag. It’s simple and straightforward for your first drop!</li>
+                  <li>Drop off your laundry: Share your address and contact information or leave your laundry in the designated locker labeled “pick-up”</li>
+              </p>
+            </div>
           </div>
-          <div class="step-text">
-            <h4>Schedule a Pickup</h4>
-            <ul>
-              <li><strong>Booking:</strong> Use our user-friendly website or app to choose your pickup day.</li>
-              <li><strong>Pack your bags:</strong> Use your Clean Drop bags if you’re a returning customer.</li>
-              <li><strong>New Users:</strong> A 13-gallon kitchen trash bag works as your first Clean Drop bag.</li>
-              <li><strong>Drop off:</strong> Provide your address or leave your laundry in the designated locker.</li>
-            </ul>
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="box ">
+            <div class="img-box">
+              <img src="images/how it works 2.png" alt="" />
+            </div>
+            <div class="detail-box">
+              <h5>
+                Expert Cleaning Process
+              </h5>
+              <p>
+                <li>Detailed Attention: We sort each piece with a keen eye, and check your pockets to prep for the perfect wash.</li>
+                  <li>Customized Care: Whether you prefer scented or unscented, need fabric softener, or require color-safe bleach — we’ve got you covered.</li>
+                  <li>Thorough Cleaning: Your clothes get a deep, expert clean, emerging spotless and fresh.</li>
+                  <li>Professional Finish: Precision folds that would make a paper airplane jealous. Your clothes come back ready to impress. You have the option to have them ironed or not depending on your requested service.</li>
+              </p>
+            </div>
           </div>
-        </article>
-        <article class="step">
-          <div class="step-img">
-            <img src="images/how it works 2.png" alt="Expert Cleaning Process">
+        </div>
+        <div class="col-sm-6 col-md-4">
+          <div class="box ">
+            <div class="img-box">
+              <img src="images/how it works 3.png" alt="" />
+            </div>
+            <div class="detail-box">
+              <h5>
+                Prompt and Secure Delivery
+              </h5>
+              <p>
+               <li>Flexible Return Times: Choose between next-day or two-day returns for your fresh, perfectly folded clothes. An additional k150 fee applies for next-day service.</li>
+               <li>New to Clean Drop?: You’ll receive your pristine laundry in our signature Clean Drop bags with your first order. </li>
+               <li>Flexible Delivery: Not home? No sweat. We’ll leave your laundry safe and sound in your desired spot or reschedule delivery. If a designated locker is in your area, you’ll find your laundry in your locker. Delaying pickup from lockers will attract a penalty fee. </li>
+               <li>Cleaned and Dropped: Consider your laundry day, delivered.</li>
+              </p>
+            </div>
           </div>
-          <div class="step-text">
-            <h4>Expert Cleaning Process</h4>
-            <ul>
-              <li><strong>Detailed Attention:</strong> We inspect every item and check pockets for a flawless wash.</li>
-              <li><strong>Customized Care:</strong> Choose scented or unscented, fabric softener, or color-safe bleach.</li>
-              <li><strong>Thorough Cleaning:</strong> Your garments receive a deep, expert clean for a spotless finish.</li>
-              <li><strong>Professional Finish:</strong> Precision folds with an option for ironing for a perfect presentation.</li>
-            </ul>
+        </div>
+        <div class="container ">
+          <div class="heading_container heading_center">
+            <h2>How<span> It Works</span></h2>
+            <h3>CARWASH SERVICE</h3>
           </div>
-        </article>
-        <article class="step">
-          <div class="step-img">
-            <img src="images/how it works 3.png" alt="Prompt and Secure Delivery">
-          </div>
-          <div class="step-text">
-            <h4>Prompt and Secure Delivery</h4>
-            <ul>
-              <li><strong>Flexible Returns:</strong> Choose next-day or two-day returns (additional k150 fee for next-day).</li>
-              <li><strong>First Order Perk:</strong> Receive your laundry in our signature Clean Drop bag.</li>
-              <li><strong>Safe Delivery:</strong> We leave your laundry at your desired spot or at a designated locker.</li>
-              <li><strong>Final Touch:</strong> Experience a hassle-free delivery every time.</li>
-            </ul>
-          </div>
-        </article>
+          <div class="row">
+            <div class="col-sm-6 col-md-4">
+              <div class="box ">
+                <div class="img-box">
+                  <img src="images/Copy of announcing the marriage of.png" alt="" />
+                </div>
+                <div class="detail-box">
+                  <h5>
+                    Schedule a Pickup
+                  </h5>
+                  <p>
+                      <li>Book a Service
+                        Scheduling a car wash has never been easier! Simply visit our website or mobile app, select your service package, and choose a date, time, and location that works best for you. Whether you're at home, work, or anywhere else, we’ll bring our services directly to you. You'll receive a confirmation message with all the details.</li>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <div class="box ">
+                <div class="img-box">
+                  <img src="images/how it works 2.png" alt="" />
+                </div>
+                <div class="detail-box">
+                  <h5>
+                    Expert Cleaning Process
+                  </h5>
+                  <p>
+                    <li>We Come to You
+                      Our trained professionals arrive at your location fully equipped with high-quality, eco-friendly cleaning products and water (if needed). We ensure a thorough exterior and interior cleaning, removing dirt, dust, and grime while protecting your vehicle’s finish. No need for a hose or electricity—our mobile unit is completely self-sufficient!</li>
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <div class="box ">
+                <div class="img-box">
+                  <img src="images/how it works 3.png" alt="" />
+                </div>
+                <div class="detail-box">
+                  <h5>
+                    Prompt and Secure Delivery
+                  </h5>
+                  <p>
+                   <li>Enjoy Your Clean Car
+                    Once your car is spotless, we’ll notify you. Inspect the results and enjoy that fresh, like-new shine! Payment is seamless through our online platform, and you can even rate your experience. With PinDrop, your car stays cleaner, and your life stays hassle-free!</li>
+                </div>
+              </div>
+            </div>
+      <div class="btn-box" >
+        <a href="schedule.html">
+          Schedule A Pickup
+        </a>
       </div>
-      <div class="tab-panel" id="carwash">
-        <article class="step">
-          <div class="step-img">
-            <img src="images/Copy of announcing the marriage of.png" alt="Schedule a Pickup">
-          </div>
-          <div class="step-text">
-            <h4>Schedule a Pickup</h4>
-            <ul>
-              <li><strong>Book a Service:</strong> Select your service package, date, time, and location via our site or app.</li>
-            </ul>
-          </div>
-        </article>
-        <article class="step">
-          <div class="step-img">
-            <img src="images/how it works 2.png" alt="Expert Cleaning Process">
-          </div>
-          <div class="step-text">
-            <h4>Expert Cleaning Process</h4>
-            <ul>
-              <li><strong>We Come to You:</strong> Our professionals arrive fully equipped with eco-friendly cleaning supplies.</li>
-            </ul>
-          </div>
-        </article>
-        <article class="step">
-          <div class="step-img">
-            <img src="images/how it works 3.png" alt="Prompt and Secure Delivery">
-          </div>
-          <div class="step-text">
-            <h4>Prompt and Secure Delivery</h4>
-            <ul>
-              <li><strong>Enjoy Your Clean Car:</strong> Once spotless, we notify you. Experience seamless payment and review options.</li>
-            </ul>
-          </div>
-        </article>
-      </div>
-      <div class="action-btn">
-        <a href="schedule.html">Schedule A Pickup</a>
-      </div>
-      <style>
-        :root {
-  --primary: #005ea2;        /* Bold navy blue */
-  --accent:  #f04e23;        /* Vibrant orange */
-  --bg-light: #f8f8f8;
-  --text-dark: #333;
-  --card-bg: #fff;
-  --transition: 0.3s ease;
-  --step-padding: 0.3rem;
-  --step-margin: 0.3rem;
-  --step-font: 0.7rem;
-  --step-heading: 0.9rem;
-}
-
-/* Section Base */
-.how-it-works {
-  background: var(--bg-light);
-  padding: 1.5rem 0;
-  font-family: 'Helvetica Neue', sans-serif;
-}
-
-/* Container */
-.container {
-  max-width: 95%;
-  margin: auto;
-  padding: 0 1rem;
-}
-
-/* Header */
-.section-header {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-.section-header h2 {
-  font-size: 1.5rem;
-  color: var(--primary);
-  margin-bottom: 0.25rem;
-}
-.section-header p {
-  font-size: 0.9rem;
-  color: var(--text-dark);
-}
-
-/* Tabs */
-.tabs {
-  text-align: center;
-  margin-bottom: 1rem;
-}
-.tab-btn {
-  background: var(--card-bg);
-  border: 1px solid var(--primary);
-  color: var(--primary);
-  padding: 0.3rem 0.7rem;
-  margin: 0 0.25rem;
-  cursor: pointer;
-  transition: background var(--transition), color var(--transition);
-  font-size: 0.8rem;
-}
-.tab-btn.active,
-.tab-btn:hover {
-  background: var(--primary);
-  color: #fff;
-}
-
-/* Tab Panels */
-.tab-panel {
-  display: none;
-  animation: fadeIn 0.3s ease-in;
-}
-.tab-panel.active {
-  display: block;
-}
-
-/* Ultra-Compact Steps */
-.step {
-  display: flex;
-  flex-wrap: wrap;
-  background: var(--card-bg);
-  border-radius: 4px;
-  margin-bottom: var(--step-margin);
-  box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-  transition: transform var(--transition), box-shadow var(--transition);
-}
-.step:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.15);
-}
-.step-img {
-  flex: 1 1 30%;
-  min-width: 60px;
-  overflow: hidden;
-}
-.step-img img {
-  width: 100%;
-  display: block;
-  transition: transform var(--transition);
-}
-.step-img img:hover {
-  transform: scale(1.03);
-}
-.step-text {
-  flex: 1 1 70%;
-  padding: var(--step-padding);
-}
-.step-text h4 {
-  font-size: var(--step-heading);
-  color: var(--primary);
-  margin-bottom: 0.2rem;
-  text-transform: uppercase;
-  letter-spacing: 0.03rem;
-}
-.step-text ul {
-  list-style: none;
-  padding: 0;
-  margin: 0.2rem 0 0 0;
-}
-.step-text li {
-  margin-bottom: 0.2rem;
-  font-size: var(--step-font);
-  color: var(--text-dark);
-  position: relative;
-  padding-left: 0.8rem;
-}
-.step-text li:before {
-  content: "✓";
-  position: absolute;
-  left: 0;
-  top: 0;
-  color: var(--accent);
-  font-weight: bold;
-}
-
-/* Action Button */
-.action-btn {
-  text-align: center;
-  margin-top: 1rem;
-}
-.action-btn a {
-  background: var(--primary);
-  color: #fff;
-  padding: 0.5rem 1.5rem;
-  border-radius: 1.5rem;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background var(--transition), transform var(--transition);
-  font-size: 0.9rem;
-}
-.action-btn a:hover {
-  background: var(--accent);
-  transform: translateY(-1px);
-}
-
-/* Fade In Animation */
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-/* Responsive Adjustments */
-@media (min-width: 768px) {
-  :root {
-    --step-padding: 0.4rem;
-    --step-margin: 0.4rem;
-    --step-font: 0.8rem;
-    --step-heading: 1rem;
-  }
-  .section-header h2 {
-    font-size: 1.75rem;
-  }
-  .section-header p {
-    font-size: 1rem;
-  }
-  .tab-btn {
-    font-size: 0.9rem;
-  }
-  .action-btn a {
-    font-size: 1rem;
-  }
-}
-/* Step Text */
-.step-text {
-  flex: 1 1 70%;
-  padding: var(--step-padding);
-  text-align: center; /* Center align text */
-  padding-left: 10%;  /* Adjust this value to nudge text towards the right */
-  font-family: 'Georgia', serif; /* Example of a more distinctive font */
-  font-size: var(--step-font);
-  color: var(--text-dark);
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.1); /* Subtle text shadow */
-}
-
-.step-text h4 {
-  font-size: var(--step-heading);
-  color: var(--primary);
-  margin-bottom: 0.25rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05rem;
-  text-shadow: 2px 2px 3px rgba(0,0,0,0.2); /* Slightly more pronounced shadow for headings */
-}
-
-      </style>
     </div>
   </section>
-  
-  <script>
-    // Tab functionality
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    const tabPanels = document.querySelectorAll('.tab-panel');
-  
-    tabButtons.forEach(btn => {
-      btn.addEventListener('click', function() {
-        tabButtons.forEach(b => b.classList.remove('active'));
-        tabPanels.forEach(panel => panel.classList.remove('active'));
-        this.classList.add('active');
-        const target = this.getAttribute('data-tab');
-        document.getElementById(target).classList.add('active');
-      });
-    });
-  </script>
-  
+
+  <!-- end service section -->
+
  
   <!-- client section -->
   <section class="client_section4">
@@ -685,13 +589,12 @@
   <!-- end client section -->
 
   <!-- info section -->
-  <section class="info_section">
+   
+  <section class="info_section ">
     <div class="info_container layout_padding2">
       <div class="container">
         <div class="info_logo">
-          <a class="navbar-brand" href="index.html">
-            <span><img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" alt="Logo"></span>
-          </a>
+          <a class="navbar-brand" href="index.html"> <span><img src="images/Copy_of_announcing_the_marriage_of-removebg-preview.png" sialt=""></span> </a>
         </div>
         <div class="info_main">
           <div class="row">
@@ -701,7 +604,7 @@
                   Useful Links
                 </h5>
                 <ul>
-                  <li class="active">
+                  <li class=" active">
                     <a class="" href="index.html">Home <span class="sr-only">(current)</span></a>
                   </li>
                   <li class="">
@@ -718,16 +621,19 @@
             </div>
             <div class="col-md-3 ">
               <h5>
-                Working Hours
+              Working Hours
               </h5>
               <p>
-                Monday – Saturday 8:00AM to 4:00PM<br>
+                Monday – Friday 8:00AM to 4:00PM
+
                 Text response time < five minutes
+                
+                
               </p>
             </div>
-            <div class="col-md-3 mx-auto">
+            <div class="col-md-3 mx-auto  ">
               <h5>
-                Social Media
+                social media
               </h5>
               <div class="social_box">
                 <a href="https://www.facebook.com/share/15gTi62DSC/?mibextid=LQQJ4d">
@@ -735,7 +641,7 @@
                 </a>
                 <a href="https://www.tiktok.com/@pindropzm?_t=ZM-8u3L7iWdKbt&_r=1" target="_blank">
                   <i class="fab fa-tiktok" aria-hidden="true"></i>
-                </a>
+                </a>                
                 <a href="#">
                   <i class="fa fa-linkedin" aria-hidden="true"></i>
                 </a>
@@ -746,56 +652,46 @@
             </div>
             <div class="col-md-3">
               <h5>
-                GET IN TOUCH TODAY!
+               GET IN TOUCH TODAY!
               </h5>
               <p>
-                We'll be glad to hear from you
+                We'll be glad to hear from you 
               </p>
             </div>
           </div>
         </div>
-        
-        <!-- Download the App Section -->
-        <div class="download_section">
-          <h5>Download Our App</h5>
-          <div class="download_links">
-            <a href="coming-soon.html" class="btn btn-primary" target="_blank" style="margin-right: 50px;">
-              <i class="fa fa-android"></i> Get it on Google Play
-            </a>
-            <a href="coming-soon.html" class="btn btn-primary" target="_blank">
-              <i class="fa fa-apple"></i> Download on the App Store
-            </a>
-          </div>
-        </div>
-        
         <div class="info_bottom">
           <div class="row">
             <div class="col-lg-9">
-              <div class="info_contact">
+              <div class="info_contact ">
                 <div class="row">
                   <div class="col-md-3">
                     <a href="https://www.google.com/maps?q=-15.379889,28.304863" class="link-box">
                       <i class="fa fa-map-marker" aria-hidden="true"></i>
-                      <span>Location</span>
+                      <span>
+                        Location
+                      </span>
                     </a>
                   </div>
                   <div class="col-md-5">
-                    <a href="#" class="link-box">
-                      <i class="fa fa-phone" aria-hidden="true"></i>
-                      <span>Call +260774857950</span>
-                    </a>
+                    <a href="tel:+260774857950" class="link-box">
+                  <i class="fa fa-phone" aria-hidden="true"></i>
+                  <span>Call +260-774-8-57950</span>
+                 </a>
                   </div>
                   <div class="col-md-4">
-                    <a href="#" class="link-box">
+                    <a href="mailto:pindropzm@outlook.com" class="link-box">
                       <i class="fa fa-envelope" aria-hidden="true"></i>
-                      <span>pindropzm@outlook.com</span>
+                      <span>
+                        pindropzm@outlook.com
+                      </span>
                     </a>
                   </div>
                 </div>
               </div>
             </div>
             <div class="col-md-3">
-              <div class="info_form">
+              <div class="info_form ">
                 <form action="">
                   <input type="email" placeholder="Enter Your Email" />
                   <button>
@@ -809,7 +705,6 @@
       </div>
     </div>
   </section>
-  
 
   <!-- end info section -->
 
@@ -818,7 +713,7 @@
     <div class="container">
       <p>
         &copy; <span id="displayYear"></span> All Rights Reserved By
-        <a href="index.html">PinDrop</a>
+        <a href="home.html">PinDrop</a>
       </p>
     </div>
   </footer>
@@ -838,120 +733,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-nice-select/1.1.0/js/jquery.nice-select.min.js" integrity="sha256-Zr3vByTlMGQhvMfgkQ5BtWRSKBGa2QlspKYJnkjZTmo=" crossorigin="anonymous"></script>
   <!-- custom js -->
   <script src="js/custom.js"></script>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        const video = document.querySelector(".hero_video");
-
-        if (video) {
-            video.play().catch(error => {
-                console.warn("Autoplay was blocked, enabling user interaction.");
-                document.addEventListener("click", () => video.play(), { once: true });
-            });
-        }
-    });
-</script>
-
-<!-- Promo Popup Styles -->
-<style>
-  /* Discount Notice Styling */
-#discountNotice {
-  color: green;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 10px;
-}
-/* Promo Popup Styles */
-.overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: none;
-  z-index: 999;
-}
-#promoPopup {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: linear-gradient(to bottom, #405a65, #299cb8, #00ffea);
-  padding: 20px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  display: none;
-  z-index: 1000;
-  text-align: center;
-  border-radius: 10px;
-  width: 300px;
-}
-#promoPopup button {
-  background-color: #005ea2;
-  color: #00ffea;
-  border: 2px solid #005ea2;
-  padding: 12px 24px;
-  border-radius: 25px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  margin: 5px;
-}
-#promoPopup button:hover {
-  background-color: #005ea2;
-  color: #bbb;
-  transform: scale(1.05);
-}
-</style>
-
-<!-- Promo Popup HTML -->
-<div class="overlay" id="overlay"></div>
-<div id="promoPopup">
-  <h2>Limited Time Offer!</h2>
-  <p>Get 10% off your next pickup.</p>
-  <p>Offer expires in <span id="countdown">60</span> seconds</p>
-  <p id="discountCodeContainer" style="display: none;">Your Code: <strong id="discountCode"></strong></p>
-  <button id="applyDiscount">Apply Discount</button>
-  <button id="cancelPopup">Cancel</button>
-</div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    // Show the popup after 5 seconds
-    setTimeout(() => {
-      document.getElementById("promoPopup").style.display = "block";
-      document.getElementById("overlay").style.display = "block";
-      startCountdown();
-    }, 5000);
-  });
-
-  // Countdown timer function
-  function startCountdown() {
-    let timeLeft = 60;
-    const countdownElement = document.getElementById("countdown");
-    const interval = setInterval(() => {
-      timeLeft--;
-      countdownElement.textContent = timeLeft;
-      if (timeLeft <= 0) {
-        clearInterval(interval);
-        closePopup();
-      }
-    }, 1000);
-  }
-
-  document.getElementById("applyDiscount").addEventListener("click", () => {
-    // Redirect to schedule page
-    window.location.href = "schedule.html?discount=true";
-  });
-
-  document.getElementById("cancelPopup").addEventListener("click", closePopup);
-
-  function closePopup() {
-    document.getElementById("promoPopup").style.display = "none";
-    document.getElementById("overlay").style.display = "none";
-  }
-</script>
 
 
 </body>
