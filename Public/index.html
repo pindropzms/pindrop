@@ -46,6 +46,86 @@
   <!-- responsive style -->
   <link href="css/responsive.css" rel="stylesheet" />
 </head>
+<style>
+ /* Allow dropdowns to overflow parent containers */
+.header_bottom,
+.custom_nav-container,
+.navbar,
+.hero_area {
+  overflow: visible !important;
+}
+
+/* Positioning context for dropdown */
+.nav-item.dropdown {
+  position: relative;
+}
+
+/* Base dropdown styling */
+.nav-item.dropdown .dropdown-menu {
+  position: absolute;          /* remove from flow */
+  top: 100%;                   /* sit below trigger */
+  left: 0;
+  display: block;              /* keep it in the DOM for transitions */
+  padding: 0.5rem 0;           /* vertical padding */
+  margin: 0.25rem 0 0;         /* small gap below link */
+  list-style: none;
+  background-color: #ffffff;   /* white background */
+  border-radius: 0.5rem;       /* rounded corners */           
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* soft drop shadow *
+  
+  /* prepare for fade & slide animation */
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition:
+    opacity 0.3s ease,         /* fade in/out */          
+    transform 0.3s ease;        /* slide up/down */
+  z-index: 2000;
+}
+
+/* Link styles inside dropdown */
+.nav-item.dropdown .dropdown-menu li a {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: #333333;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background-color 0.2s ease;               
+}
+
+.nav-item.dropdown .dropdown-menu li a:hover {
+  background-color: #f5f5f5; /* light gray hover */
+}
+
+/* Show the dropdown (on hover or via Bootstrap “show” class) */
+.nav-item.dropdown:hover > .dropdown-menu,
+.nav-item.dropdown.show > .dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+</style>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const dropdown = document.querySelector('.nav-item.dropdown');
+    const trigger   = dropdown.querySelector('.nav-link');
+
+    trigger.addEventListener('click', function(e) {
+      // Prevent following the href on first tap
+      e.preventDefault();
+      dropdown.classList.toggle('show');
+    });
+
+    // Close if clicking outside
+    document.addEventListener('click', function(e) {
+      if (!dropdown.contains(e.target)) {
+        dropdown.classList.remove('show');
+      }
+    });
+  });
+</script>
+
 
 
 <body>
@@ -67,11 +147,11 @@
               <i class="fa fa-map-marker" aria-hidden="true"></i>
               <span>Lusaka, Zambia</span>
             </a>
-            <a href="">
-              <i class="fa fa-phone" aria-hidden="true"></i>
-              <span>+260-958-6-10414</span>
-            </a>
-            <a href="">
+            <a href="tel:+260774857950" class="link-box">
+                  <i class="fa fa-phone" aria-hidden="true"></i>
+                  <span>Call +260-774-8-57950</span>
+                 </a>
+            <a href="mailto:pindropzm@outlook.com" class="link-box">
               <i class="fa fa-envelope" aria-hidden="true"></i>
               <span>pindropzm@outlook.com</span>
             </a>
@@ -108,9 +188,14 @@
               <li class="nav-item ">
                   <a class="nav-link" href="index.html">Home <span class="sr-only">Home</span></a>
                 </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="service.html">Services</a>
-                </li>
+                <li class="nav-item dropdown">
+                 <a class="nav-link" href="service.html"><b>SERVICES</b></a>
+                 <ul class="dropdown-menu">
+                 <li><a href="laundry.html">Laundry</a></li>
+                 <li><a href="cleaning.html">Cleaning</a></li>
+                 <li><a href="carwash.html">Carwash</a></li>
+              </ul>
+              </li>
                 <li class="nav-item active">
                   <a class="nav-link" href="about.html"> About</a>
                 </li>
@@ -534,7 +619,7 @@
               Working Hours
               </h5>
               <p>
-                Monday – Friday 9:00AM to 4:00PM
+                Monday – Friday 8:00AM to 4:00PM
 
                 Text response time < five minutes
                 
@@ -584,15 +669,13 @@
                     </a>
                   </div>
                   <div class="col-md-5">
-                    <a href="#" class="link-box">
-                      <i class="fa fa-phone" aria-hidden="true"></i>
-                      <span>
-                        Call +260-958-6-10414
-                      </span>
-                    </a>
+                    <a href="tel:+260774857950" class="link-box">
+                  <i class="fa fa-phone" aria-hidden="true"></i>
+                  <span>Call +260-774-8-57950</span>
+                 </a>
                   </div>
                   <div class="col-md-4">
-                    <a href="#" class="link-box">
+                    <a href="mailto:pindropzm@outlook.com" class="link-box">
                       <i class="fa fa-envelope" aria-hidden="true"></i>
                       <span>
                         pindropzm@outlook.com
