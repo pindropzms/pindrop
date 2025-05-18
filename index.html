@@ -614,7 +614,111 @@
 
   <!-- end service section -->
 
- 
+ <section class="app-download-section">
+  <div class="container">
+    <div class="app-download-content">
+      <div class="text-content">
+        <h2>Get the Clean Drop App</h2>
+        <p>Enjoy seamless laundry, cleaning, and carwash scheduling anytime, anywhere. Download now and simplify your day!</p>
+        <div class="app-buttons">
+          <a href="coming-soon.html" class="store-button google-play">
+            <img src="images/google-play-badge.jpeg" alt="Google Play">
+          </a>
+          <a href="coming-soon.html" class="store-button app-store">
+            <img src="images/app-store-badge.jpeg" alt="App Store">
+          </a>
+        </div>
+      </div>
+      <div class="image-content">
+        <img src="images/app.jpeg" alt="App Preview">
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .app-download-section {
+  background: linear-gradient(to right, #f0f8ff, #e0f0ff);
+  padding: 60px 20px;
+}
+
+.app-download-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.text-content {
+  flex: 1 1 50%;
+  padding: 20px;
+}
+
+.text-content h2 {
+  font-size: 32px;
+  margin-bottom: 10px;
+  color: #0d6efd;
+}
+
+.text-content p {
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.app-buttons {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.store-button img {
+  height: 50px;
+  transition: transform 0.3s ease;
+}
+
+.store-button img:hover {
+  transform: scale(1.05);
+}
+
+.image-content {
+  flex: 1 1 40%;
+  text-align: center;
+}
+
+.image-content img {
+  max-width: 250px;
+  width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .app-download-content {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .text-content, .image-content {
+    flex: 1 1 100%;
+  }
+
+  .text-content h2 {
+    font-size: 28px;
+  }
+
+  .text-content p {
+    font-size: 16px;
+  }
+
+  .store-button img {
+    height: 45px;
+  }
+}
+
+  </style>
+</section>
+
   <!-- client section -->
   <section class="client_section4">
     <div class="container">
