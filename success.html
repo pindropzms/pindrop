@@ -66,7 +66,7 @@
   <!-- Status Message Section -->
   <div id="statusMessage" class="status-message"></div>
   
-  <h1>Thank you for scheduling your pickup!</h1>
+  <h1>Thank you for scheduling your service!</h1>
   <p>
     We have received your request, and your pickup has been scheduled. You will be notified once it's confirmed.
     If you need to make any changes or check your schedule, feel free to reach out.
@@ -76,7 +76,31 @@
   <a href="index.html" class="home-button">Go to Homepage</a>
 </div>
 
+<script>
+  window.onload = function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const status = urlParams.get("status");
+    const message = urlParams.get("message");
+    const discount = urlParams.get("discount");
+    
+    const statusMessageEl = document.getElementById("statusMessage");
+    const discountInfoEl = document.getElementById("discountInfo");
 
+    if (status === "success") {
+      statusMessageEl.textContent = "✅ " + message;
+      statusMessageEl.style.color = "green";
+    } else if (status === "error") {
+      statusMessageEl.textContent = "⚠️ " + message;
+      statusMessageEl.style.color = "red";
+    }
+
+    if (discount) {
+      discountInfoEl.innerHTML = `<p>Your discount code is: <strong>${discount}</strong></p>`;
+    } else {
+      discountInfoEl.innerHTML = `<p>No discount code was granted.</p>`;
+    }
+  }
+</script>
 
 
 </body>
