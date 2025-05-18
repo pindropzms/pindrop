@@ -76,36 +76,8 @@
   <a href="index.html" class="home-button">Go to Homepage</a>
 </div>
 
-<script>
-  window.onload = function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const status = urlParams.get("status");
-    const message = urlParams.get("message");
-    const discount = urlParams.get("discount");
-    
-    const statusMessageEl = document.getElementById("statusMessage");
-    const discountInfoEl = document.getElementById("discountInfo");
 
-    if (status === "success") {
-      statusMessageEl.textContent = "✅ " + message;
-      statusMessageEl.style.color = "green";
-    } else if (status === "error") {
-      statusMessageEl.textContent = "⚠️ " + message;
-      statusMessageEl.style.color = "red";
-    }
 
-    if (discount) {
-      discountInfoEl.innerHTML = `<p>Your discount code is: <strong>${discount}</strong></p>`;
-    } else {
-      discountInfoEl.innerHTML = `<p>No discount code was granted.</p>`;
-    }
-  }
-</script>
-
-<!-- Status Message -->
-<div id="statusMessage" class="status-message"></div>
-<!-- Discount Information -->
-<div id="discountInfo"></div>
 
 </body>
 
